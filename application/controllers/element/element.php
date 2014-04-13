@@ -6,6 +6,11 @@ class Element extends CI_Controller {
             //$this->load->view('list_city/city_home');
             $this->load->view('place/list_element');
 	}
+        public function elementview($param=null){
+            $this->load->view('template/header');
+                $this->load->view('element/elementview');
+                $this->load->view('template/footer');
+        }
         public function view($paramPri=null){
             $validPage = true;
             $this->load->model('Common_model','commonmodel');

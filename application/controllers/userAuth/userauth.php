@@ -7,8 +7,22 @@ class Userauth extends CI_Controller {
             $this->load->view('template/footer');
 	}
         public function login(){
+            $this->load->helper('url');
+            $this->load->model('userauth/Userauth_model','userauthmodel');
+            $data = array();
+            if($this->userauthmodel->isloggedIn()){
+                redirect("/");
+            }
+            if($this->input->post()){
+                $postDataArray = $this->input->post();
+                $getUserAuthReturnArray = $this->userauthmodel->validateUserLogin($postDataArray['email'],  $postDataArray['password']);
+                $data['postResult']=$getUserAuthReturnArray;
+                if($getUserAuthReturnArray['status']){
+                    redirect("/");
+                }
+            }
             $this->load->view('template/header');
-            $this->load->view('userauth/login');
+            $this->load->view('userauth/login',$data);
             $this->load->view('template/footer');
 	}
         public function forgotpassword()

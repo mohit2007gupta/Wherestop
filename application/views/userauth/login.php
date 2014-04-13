@@ -6,15 +6,30 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="intro-message ws-login-form">
-                        <form>
+                        <form action="<?php echo current_url(); ?>" method="post">
+                            
                             <legend class="ws-header">Login</legend>
-                          <div class="input-group margin-bottom-sm ws-margin-small">
+                            <?php
+                                if(isset($postResult)){
+                                    $sessionData = $this->session->all_userdata();
+                                    ?>
+                                    <div class="alert alert-<?php if($postResult['status']){ echo "success"; }else{ echo "danger"; } ?>">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong></strong> <?php echo $postResult['message']; ?>
+                                    </div>
+                                    <?php
+                                    //echo "<pre>";
+                                    //print_r($postResult);
+                                    //echo "</pre>";
+                                }
+                            ?>
+                            <div class="input-group margin-bottom-sm ws-margin-small">
                             <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
-                            <input class="form-control" type="text" placeholder="Email address">
+                            <input class="form-control" name="email" type="text" placeholder="Email address">
                           </div>
                           <div class="input-group ws-margin-small">
                             <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
-                            <input class="form-control" type="password" placeholder="Password">
+                            <input class="form-control" name="password" type="password" placeholder="Password">
                           </div>
                           <div class="input-group ws-margin-small">
                               <label class="checkbox">

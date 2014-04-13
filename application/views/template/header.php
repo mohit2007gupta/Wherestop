@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Wherestop | Explore Add Share | </title>
+    <title>Wherestop | Explore Plan Share | </title>
 
     <?php 
         include('commonhead.php');
@@ -36,12 +36,15 @@
                     <li>
                         <a href="#" id="drop3" role="button" class="dropdown-toggle" data-toggle="dropdown">Delhi NCR <b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
-                          <li role="presentation"><input class="form-control" type="text" /></li>
-                          <li role="presentation" class="divider"></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat">Mumbai</a></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat">Lucknow</a></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat">Kolkata</a></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat">Varanasi</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url("India/mumbai") ?>">Mumbai</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url("India/lucknow") ?>">Lucknow</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url("India/kolkata") ?>">Kolkata</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url("India/varanasi") ?>">Varanasi</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url("India/udaipur") ?>">Udaipur</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url("India/kashmir") ?>">Kashmir</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url("India/delhi") ?>">Delhi</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url("India/jaipur") ?>">Jaipur</a></li>
+                          
                         </ul>
                     </li>
                     <li><a href="#services"><i class="fa fa-bell fa-fw"></i> </a>
@@ -49,12 +52,12 @@
                     <li id="fat-menu" class="dropdown">
                         <a href="#" id="drop3" role="button" class="dropdown-toggle" data-toggle="dropdown">Mohit K <b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat"><i class="fa fa-list fa-fw"></i> List</a></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat"><i class="fa fa-pencil fa-fw"></i> Reviews</a></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat"><i class="fa fa-users fa-fw"></i> Network</a></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat"><i class="fa fa-gears fa-fw"></i> Setting</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url("user/list"); ?>"><i class="fa fa-list fa-fw"></i> List</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url("user/reviews"); ?>"><i class="fa fa-pencil fa-fw"></i> Reviews</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url("user/network"); ?>"><i class="fa fa-users fa-fw"></i> Network</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url("user/setting"); ?>"><i class="fa fa-gears fa-fw"></i> Setting</a></li>
                           <li role="presentation" class="divider"></li>
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat"><i class="fa fa-user fa-fw"></i> Log out</a></li>
+                          <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url("userauth/logout"); ?>"><i class="fa fa-user fa-fw"></i> Log out</a></li>
                         </ul>
                     </li>
                     </li>

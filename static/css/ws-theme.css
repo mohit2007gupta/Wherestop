@@ -31,3 +31,10 @@ box-shadow: 0px 5px 48px 26px rgba(0,0,0,0.75);
 legend.ws-header{
     color: #0088cc;
 }
+.ws-center-align{
+    text-align: center;
+}
+.ws-intro-message{
+    padding-top: 50px;
+    padding-bottom: 0px;
+}

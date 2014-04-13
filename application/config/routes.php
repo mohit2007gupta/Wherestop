@@ -38,10 +38,21 @@
 |
 */
 
-$route['default_controller'] = "welcome";
-$route['India/(:any)'] = "place/place/view/$1";
-$route['Italy/(:any)'] = "place/place/view/$1";
 $route['userauth/(:any)'] = "userauth/userauth/$1";
+$route['user/(:any)'] = "user/user";
+
+// place routing
+$countryList = array('India','india','Italy','italy');
+foreach($countryList as $country){
+    $str = $country."/(:any)/(:any)";
+    $route[$str] = "element/element/elementview/$1";
+    $str = $country."/(:any)";
+    $route[$str] = "place/place/placeview/$1";
+    $str = $country;
+    $route[$str] = "place/place/countryview";
+}
+
+$route['default_controller'] = "welcome";
 $route['404_override'] = 'my404';
 
 
