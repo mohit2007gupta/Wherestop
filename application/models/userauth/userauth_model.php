@@ -6,12 +6,14 @@
  */
 class Userauth_model extends CI_Model {
 
+	
     function __construct()
     {
         // Call the Model constructor
         $this->load->database();
         parent::__construct();
     }
+    
     function isloggedIn(){
         $this->load->library('session');
         if(!$this->session->userdata('logged_in')){
@@ -22,6 +24,7 @@ class Userauth_model extends CI_Model {
         }
         return true;
     }
+    
     function getLoggedInUserID(){
         $this->load->library('session');
         if($this->isloggedIn()){
@@ -29,6 +32,7 @@ class Userauth_model extends CI_Model {
         }
         return false;
     }
+    
     function _checkValidLoginSession(){
         $this->load->library('session');
         if(!$this->session->userdata('userid')){
@@ -39,6 +43,7 @@ class Userauth_model extends CI_Model {
         }
         return true;
     }
+    
     function _setUserLoginSession($useremail,$userId){
         $newdata = array(
                    'useremail'  => $useremail,
@@ -47,6 +52,33 @@ class Userauth_model extends CI_Model {
              );
         $this->session->set_userdata($newdata);
     }
+    
+	function validateEmail($useremail) {
+    	log_message('info', "userEmail in validateEmail: ".$useremail);
+    	
+    	$result['status'] = false;
+    	$result['message'] = "communication error";
+    	
+    	$emailQueryString = "select * from user_login where emailid = \"".$useremail."\"";
+    	
+    	log_message('info', "emailQueryString: ".$emailQueryString);
+    	
+    	$emailQuery = $this->db->query($emailQueryString);
+    	$resultCount = $emailQuery->num_rows();
+    	
+    	log_message('info', "emailQueryNumRows=".$resultCount);
+    	
+    	if ($resultCount > 0) {
+    		$result['status'] = true;	
+    		$result['message'] = 'User already exists.';
+    	} else {
+    		$result['status'] = true;
+    		$result['message'] = 'valid email entered';
+    	} 
+    	
+    	return $result;
+    }
+    
     function validateUserLogin($useremail,$password){
         $this->load->library('session');
         $returnArray = array();
@@ -70,6 +102,7 @@ class Userauth_model extends CI_Model {
         }
         return $returnArray;
     }
+    
     function logoutSession(){
         $this->load->library('session');
          $this->load->helper('url');
