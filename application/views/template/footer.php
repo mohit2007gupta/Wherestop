@@ -24,7 +24,7 @@
     <!-- JavaScript -->
     <script src="<?php echo base_url(); ?>static/js/jquery-1.10.2.js"></script>
     <script src="<?php echo base_url(); ?>static/js/bootstrap.js"></script>
-
+<script src="<?php echo base_url('static/js/frontApp/frontApp.js'); ?>" type="text/javascript"></script>
 </body>
 
 </html>

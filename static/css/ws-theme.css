@@ -7,7 +7,7 @@
 
 .ws-container{
     margin-top: 50px;
-    min-height: 200px;
+    min-height: 500px;
 }
 .ws-login-form{
     width: 400px;
@@ -37,4 +37,7 @@ legend.ws-header{
 .ws-intro-message{
     padding-top: 50px;
     padding-bottom: 0px;
+}
+.ws-intro-divider{
+    margin: 20px auto;
 }
