@@ -1,0 +1,11 @@
+<div class="dropdown open button-selector">
+    <button id="drop1" href="#" role="button" class="dropdown-toggle btn" data-toggle="dropdown">{{selectedCountryLabel}} <b class="caret"></b></button>
+    <div class="dropdown-menu" role="menu" aria-labelledby="drop1">
+        <input type="text" ng-model="query" class="selector-filter" />
+        <div class="selector-list-container">
+            <ul class="unstyled selector-list">
+                <li ng-repeat="countryTemp in countries | filter:query"><a tabindex="-1" data-ng-click="selectCountry(countryTemp.id)">{{countryTemp.nicename}}</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="row-fluid searchResultRow">
+    <div class="span12" style="">
+        <div class="row-fluid">
+            <div class="span2 ">
+                <img ng-src="{{model.urlService.BASE_URI}}{{model.imagePath}}{{model.id}}.jpg" />
+            </div>
+            <div class="span8 ">
+                <h4><a href="{{model.urlService.BASE_URI}}view/{{model.component.slug}}/{{model.id}}/{{model.slug}}">{{model.title}}</a></h4>
+                <div class="clear"></div>
+                <div ng-show="model.widgetvisible.contactinfo">
+                    <ws-contact-info mode="search" elementid="model.id" model="model.widgetdata"></ws-contact-info>
+                </div>
+            </div>
+            <div class="span2 "></div>
+        </div>
+    </div>
+</div>
