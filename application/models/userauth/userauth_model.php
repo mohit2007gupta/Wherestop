@@ -128,6 +128,10 @@ class Userauth_model extends CI_Model {
         $password = md5($password);
         $returnArray["message"]="Communication error";
         $returnArray["status"]=false;
+        if($useremail=="" || $password==""){
+        	$returnArray['message']="Fields cannot be left blank";
+        	return $returnArray;
+        }
         $dataQuery = "select * from user_login where emailid = \"".$useremail."\"";
         $query = $this->db->query($dataQuery);
         if($query->num_rows()==1){
