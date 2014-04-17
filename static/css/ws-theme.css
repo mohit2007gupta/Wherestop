@@ -41,3 +41,32 @@ legend.ws-header{
 .ws-intro-divider{
     margin: 20px auto;
 }
+
+.ws-inverse{
+	background: white;
+}
+.ws-widget-fix-height{
+	min-height: 200px;
+	max-height: 400px;
+	overflow: hidden;
+}
+.ws-place-widget{
+	margin: 10px;
+	padding: 10px;
+}
+.ws-place-widget header{
+	font-weight: bold;
+	color: #0088cc;
+	border-bottom: 2px solid orange;
+	font-size: 20px;
+		
+}
+
+.ws-place-widget .content{
+	font-weight: normal;
+	padding: 10px;
+	font-size: 13px;
+	overflow: auto;
+	height: 200px;
+	overflow: auto;
+}

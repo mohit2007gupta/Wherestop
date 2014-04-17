@@ -7,12 +7,12 @@ define("js/placeapp/placeapp",[
     ], function (angular) {
     var demoapp = angular.module('placeapp', ['html.infrastructure.Infrastructure','placeapp.services','html.placeapp.frontcomponents']).config(["$routeProvider",function($routeProvider){
         var baseUrl = jsPath+"placeapp/partials/";
-        $routeProvider.when('/home', {
+        $routeProvider.when('/', {
             controller: 'HomeController',
             templateUrl: baseUrl+'home.html'
         });
         $routeProvider.otherwise({
-            redirectTo: '/home'
+            redirectTo: '/'
         });
     }]);
     demoapp.controller('HomeController',["$scope","$routeParams","URLService","PlaceServices",function($scope,$routeParams,URLService,PlaceServices){
