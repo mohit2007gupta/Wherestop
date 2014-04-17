@@ -60,44 +60,26 @@ class Userauth_model extends CI_Model {
     	$lastName = $postParameters['lastName'];
     	$email = $postParameters['email'];
     	$password = $postParameters['password'];
-    	 
+    	
+    	log_message('info', "params= ".$firstName.$lastName.$email.$password." ksk");
+    	
     	// validate first name and last name
-    	if ($this->isNullOrEmptyString($firstName) || $this->isNullOrEmptyString($lastName)) {
+    	if ($this->isNullOrEmptyString($firstName) || $this->isNullOrEmptyString($lastName) 
+    			|| $this->isNullOrEmptyString($email) || $this->isNullOrEmptyString($password)) {    		
     		$validateResult['status'] = false;
-    		$validateResult['message'] = 'First / Last Name cannot be blank.';
+    		$validateResult['message'] = 'Blank values are not allowed.';
     		
     		return $validateResult;
     	}
 
-    	// validate email address
-    	if($this->isNullOrEmptyString($email)){
-    		$validateResult['status'] = false;
-    		$validateResult['message'] = 'Please enter your email.';
-    		
-    		return $validateResult;
+    	// validate email address expression and already existing check
+    	if (preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $email)) {
+    		$validateResult = $this->validateEmail($email);
     	} else {
-    		if (preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $email)) {
-    			$emailValidationResult = $this->validateEmail($email);
-
-    			if (!$emailValidationResult['status']) {
-    				$validateResult = $emailValidationResult;
-    			}
-    		} else {
-    			$validateResult['status'] = false;
-    			$validateResult['message'] = 'Invalid email address.';
-    		}
-    		
-    		return $validateResult;
-    	}
-    	
-    	// validate password
-    	if ($this->isNullOrEmptyString($password)) {
     		$validateResult['status'] = false;
-    		$validateResult['message'] = 'Password cannot be blank.';
-    		
-    		return $validateResult;
+    		$validateResult['message'] = 'Invalid email address.';
     	}
-    	
+    		
     	return $validateResult;
     }
     
