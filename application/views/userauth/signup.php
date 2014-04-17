@@ -18,9 +18,6 @@
 		                            	<strong></strong> <?php echo $postResult['message']; ?>
 		                            </div>
                             <?php
-		                            echo "<pre>";
-		                            	print_r($postResult);
-		                            echo "</pre>";
                                 }
                             ?>
                             
@@ -46,7 +43,8 @@
                           	
                           	<div class="center-block center input-group ws-margin-small">
                                 <div class="center-block center col-lg-6">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <input type="submit" class="btn btn-primary" value="Submit" />
+                                    <br /><br />
                                 </div>
                           	</div>
                             
