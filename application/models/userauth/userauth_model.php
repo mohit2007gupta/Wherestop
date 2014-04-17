@@ -53,23 +53,66 @@ class Userauth_model extends CI_Model {
         $this->session->set_userdata($newdata);
     }
     
-	function validateEmail($useremail) {
-    	log_message('info', "userEmail in validateEmail: ".$useremail);
+    function validateSignupParameters($postParameters) {
+    	$validateResult = array('status'=> true, 'message'=>'parameters validated.');
+    	 
+    	$firstName = $postParameters['firstName'];
+    	$lastName = $postParameters['lastName'];
+    	$email = $postParameters['email'];
+    	$password = $postParameters['password'];
+    	 
+    	// validate first name and last name
+    	if ($this->isNullOrEmptyString($firstName) || $this->isNullOrEmptyString($lastName)) {
+    		$validateResult['status'] = false;
+    		$validateResult['message'] = 'First / Last Name cannot be blank.';
+    		
+    		return $validateResult;
+    	}
+
+    	// validate email address
+    	if($this->isNullOrEmptyString($email)){
+    		$validateResult['status'] = false;
+    		$validateResult['message'] = 'Please enter your email.';
+    		
+    		return $validateResult;
+    	} else {
+    		if (preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $email)) {
+    			$emailValidationResult = $this->validateEmail($email);
+
+    			if (!$emailValidationResult['status']) {
+    				$validateResult = $emailValidationResult;
+    			}
+    		} else {
+    			$validateResult['status'] = false;
+    			$validateResult['message'] = 'Invalid email address.';
+    		}
+    		
+    		return $validateResult;
+    	}
     	
-    	$result['status'] = false;
-    	$result['message'] = "communication error";
+    	// validate password
+    	if ($this->isNullOrEmptyString($password)) {
+    		$validateResult['status'] = false;
+    		$validateResult['message'] = 'Password cannot be blank.';
+    		
+    		return $validateResult;
+    	}
+    	
+    	return $validateResult;
+    }
+    
+	function validateEmail($useremail) {
+    	$result = array();
     	
     	$emailQueryString = "select * from user_login where emailid = \"".$useremail."\"";
-    	
     	log_message('info', "emailQueryString: ".$emailQueryString);
     	
     	$emailQuery = $this->db->query($emailQueryString);
-    	$resultCount = $emailQuery->num_rows();
-    	
+    	$resultCount = $emailQuery->num_rows();    	
     	log_message('info', "emailQueryNumRows=".$resultCount);
     	
     	if ($resultCount > 0) {
-    		$result['status'] = true;	
+    		$result['status'] = false;	
     		$result['message'] = 'User already exists.';
     	} else {
     		$result['status'] = true;
@@ -111,5 +154,11 @@ class Userauth_model extends CI_Model {
         $this->session->sess_destroy();
         redirect('/');
     }
+    
+    // fn to check null or empty string
+    function isNullOrEmptyString($stringInstance) {
+    	return (!isset($stringInstance) || trim($stringInstance)==='');
+    }
+    
 }
 ?>

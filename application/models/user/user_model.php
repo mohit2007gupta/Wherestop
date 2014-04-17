@@ -44,12 +44,19 @@ class User_model extends CI_Model {
         return $userDetail[0];
     }
     
-    function insertUserLogin($userEmail, $userPassword, $userValid) {
+    function insertUserLogin($signUpParameters, $userValid) {
     	$result['status'] = false;
     	$result['message'] = "communication error";
     	
-    	$insertQueryString = "insert into user_login(emailid, password, valid) values(\"".$userEmail."\", 
-    			\"".md5($userPassword)."\", \"".$userValid."\")";
+    	$firstName = $signUpParameters['firstName'];
+    	$lastName = $signUpParameters['lastName'];
+    	$email = $signUpParameters['email'];
+    	$password = $signUpParameters['password'];
+    	
+    	$insertQueryString = "insert into user_login(emailid, password, valid, first_name, last_name) values(\"".$email."\", 
+    			\"".md5($password)."\", \"".$userValid."\", \"".$firstName."\", \"".$lastName."\")";
+    	
+    	log_message('info', "insertQueryString=".$insertQueryString);
     	
     	if ($this->db->query($insertQueryString)) {
     		$result['status'] = true;
@@ -58,7 +65,7 @@ class User_model extends CI_Model {
     		return $result;
     	}
     	
-    	$result['message'] = 'User cannot be registered due to some internal probllems, Please try again later.';
+    	$result['message'] = 'User cannot be registered due to some internal problems, Please try again later.';
     	return $result;
     }
     

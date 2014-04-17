@@ -46,22 +46,28 @@ class Userauth extends CI_Controller {
         	
         if($this->input->post()){
         	$postDataArray = $this->input->post();
-        		
-       		$getUserValidateResult = $this->userauthmodel->validateEmail($postDataArray['email']);
-			$data['postResult'] = $getUserValidateResult;
-       		
-       		if ($getUserValidateResult['status']) {
-       			$this->load->model('user/user_model', 'userModel');
-       			$insertResult = $this->userModel->insertUserLogin($postDataArray['email'], $postDataArray['password'], 1);
+        	$signUpParameters = $this->userauthmodel->validateSignupParameters($postDataArray);
+
+        	foreach ($signUpParameters as $key => $value) {
+        		log_message('info', "key=".$key." value=".$value);
+        	}
+
+        	if ($signUpParameters['status']) {
+	        	$this->load->model('user/user_model', 'userModel');
+       			$insertResult = $this->userModel->insertUserLogin($postDataArray, 1);
        			
        			if ($insertResult['status']) {
        				redirect("/");
+       			} else {
+       				$data['postResult'] = $insertResult;
        			}
+        	} else {
+       			$data['postResult'] = $signUpParameters;
        		}
        	}
        	
        	$this->load->view('template/header');
-        $this->load->view('userauth/signup');
+        $this->load->view('userauth/signup', $data);
         $this->load->view('template/footer');
 	}
 	
