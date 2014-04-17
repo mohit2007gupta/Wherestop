@@ -19,7 +19,7 @@ require APPPATH.'/libraries/REST_Controller.php';
 class Place extends REST_Controller
 {
     public function index_get(){
-        $this->load->model('Place_model','placemodel');
+        $this->load->model('place/Place_model','placemodel');
         $placeList = $this->placemodel->getAllPlaces();
         $formattedPlaceArr = array();
         foreach ($placeList as $placeItem){
@@ -44,7 +44,7 @@ class Place extends REST_Controller
         if(isset($params['filter'])){
             $filter = $params['filter'];
         }
-        $this->load->model('Place_model','placemodel');
+        $this->load->model('place/Place_model','placemodel');
         $placeList = $this->placemodel->getPlacesFilter($countryId,$filter);
         $formattedPlaceArr = array();
         foreach ($placeList as $placeItem){
@@ -59,7 +59,7 @@ class Place extends REST_Controller
         }
     }
     public function update_post(){
-        $this->load->model('Place_model','placemodel');
+        $this->load->model('place/Place_model','placemodel');
         $updatePlaceResponse = $this->placemodel->updatePlace($this->post());
         if($updatePlaceResponse)
         {
@@ -70,7 +70,7 @@ class Place extends REST_Controller
         }
     }
     public function add_post(){
-        $this->load->model('Place_model','placemodel');
+        $this->load->model('place/Place_model','placemodel');
         $addPlaceResponse = $this->placemodel->addPlace($this->post());
         if($addPlaceResponse)
         {
@@ -81,7 +81,7 @@ class Place extends REST_Controller
         }
     }
     public function info_get($placeId){
-        $this->load->model('Place_model','placemodel');
+        $this->load->model('place/Place_model','placemodel');
         $placeInfo = $this->placemodel->getPlaceDetail($placeId);
         if($placeInfo)
         {

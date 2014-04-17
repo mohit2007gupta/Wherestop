@@ -57,7 +57,22 @@ define("js/infrastructure/js/services/CommonServices",[
     }]);
     CommonServices.factory("PlaceService", ["$location","$http", "$log", "$q","CommonConstants", function ($location, $http, $log, $q,CommonConstants) {
         var that = this;
-
+        this.getPlaceInfo =function(placeId){
+        	var deferred = $q.defer();
+            var urlToUse = baseUrl+'rest/place/info';
+            $http({
+                url: urlToUse,
+                method: "GET",
+                params: {
+                    "placeId" : placeId
+                }
+            }).success(function(data){
+                    deferred.resolve(data);
+                }).error(function(data){
+                    deferred.reject();
+                });
+            return deferred.promise;
+        };
         this.getPlaces = function(countryId) {
             var deferred = $q.defer();
             if(countryId==null){

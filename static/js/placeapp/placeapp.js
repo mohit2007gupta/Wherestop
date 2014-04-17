@@ -15,9 +15,12 @@ define("js/placeapp/placeapp",[
             redirectTo: '/home'
         });
     }]);
-    demoapp.controller('HomeController',["$scope","$routeParams","URLService","ElementServices",function($scope,$routeParams,URLService,ElementServices){
+    demoapp.controller('HomeController',["$scope","$routeParams","URLService","PlaceServices",function($scope,$routeParams,URLService,PlaceServices){
         $scope.x="From angular application";
         console.log('In demo angular app');
+        PlaceServices.getPlaceInfo(cityId).then(function(data){
+        	$scope.placeDetail = data;
+        });
     }]);
     return demoapp;
 });

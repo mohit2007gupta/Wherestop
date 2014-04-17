@@ -23,7 +23,7 @@
                             
                             <div class="input-group margin-bottom-sm ws-margin-small">
                                 <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
-                                <input name="firstName" class="form-control" type="text" placeholder="First Name">
+                                <input name="firstName" class="form-control" type="text" value="<?php if(isset($_POST['firstName'])) { echo trim($_POST['firstName']); } ; ?>" placeholder="First Name">
                             </div>
                             
                             <div class="input-group margin-bottom-sm ws-margin-small">
