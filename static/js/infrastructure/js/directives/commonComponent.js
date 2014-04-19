@@ -2,6 +2,7 @@ define("js/infrastructure/js/directives/commonComponent",[
     'angular'
     ,'jquery'
     ,'js/infrastructure/js/services/CommonServices'
+    ,'js/infrastructure/js/services/ElementServices'
 ], function (angular, $) {
     var componentModule = angular.module("html.infrastructure.components.CommonComponent", [
         ,"html.infrastructure.CommonServices"
@@ -475,6 +476,56 @@ define("js/infrastructure/js/directives/commonComponent",[
             }
         };
     }]);
+    componentModule.directive('wsCountryFlag',["URLService","SearchServices","$location","$anchorScroll", function(URLService,SearchServices,$location,$anchorScroll){
+        return {
+            restrict : 'E',
+            replace:true,
+            scope: {
+                'model' : '=',
+                'size' : '='
+            },
+            template : '<img ng-src="http://localhost/wherestop/static/images/flags/{{size}}/{{model.iso}}.png" >',
+            controller: ["$scope","$location", function ($scope,$location) {
+                
+            }],
+            link : function(scope,element,attrs,ngModel){
+                scope.model={
+                		"iso":"IN"
+                }
+            }
+        };
+    }]);
 
+    componentModule.directive('wsElementButton',["URLService","SearchServices","$location","$anchorScroll", function(URLService,SearchServices,$location,$anchorScroll){
+    	return {
+            restrict : 'E',
+            replace:true,
+            scope: {
+                
+            },
+            templateUrl: URLService.getInfrastructurePartialsPath()+"addelementmodal.html",
+            controller: ["$scope","$location","ElementEditService", function ($scope,$location,ElementEditService) {
+                $scope.modalopen = false;
+                $scope.test = "ABC";
+                $scope.model = {};
+                $scope.addElement = function(){
+                	ElementEditService.addElementPartial($scope.model).then(function(data){
+                        if(data && data.status && true==data.status){
+                        	$('#addelementmodal').modal('hide');
+                        	var pageUrl = window.location.href;
+                        	window.location.href= (window.location.origin+window.location.pathname+"/"+data.element.slug+"#/edit");
+                        }
+                    });
+                };
+                $scope.openAddElementModal = function(){
+                	$('#addelementmodal').modal();
+                };
+                
+            }],
+            link : function(scope,element,attrs,ngModel){
+                scope.selected = scope.selected || "Not selected";
+            }
+        };
+    }]);
     return componentModule;
 });

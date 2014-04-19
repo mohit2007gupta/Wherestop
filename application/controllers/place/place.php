@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Place extends CI_Controller {
+class Place extends WS_Controller {
 
 	public function index()
 	{

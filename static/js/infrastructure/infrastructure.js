@@ -17,7 +17,7 @@ define("js/infrastructure/infrastructure",[
     ,'js/infrastructure/js/services/CommonServices'
     ,'js/infrastructure/js/services/WidgetServices'
     ,'js/infrastructure/js/services/ElementServices'
-
+    ,'js/infrastructure/js/services/PlaceServices'
 ], function (angular,$,_) {
     var infrastructureModule = angular.module("html.infrastructure.Infrastructure", [
         "html.infrastructure.components.Message"
@@ -27,6 +27,7 @@ define("js/infrastructure/infrastructure",[
         ,"html.infrastructure.CommonServices"
         ,"html.infrastructure.WidgetServices"
         ,"html.infrastructure.ElementServices"
+        ,"html.infrastructure.PlaceServices"
         ,"ui.bootstrap"
         ,"google-maps"
     ]);

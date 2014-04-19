@@ -1,10 +1,10 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class Userauth extends CI_Controller {
+class Userauth extends WS_Controller {
 	
 
 	public function index()
 	{
-            $this->load->view('template/blank_header');
+            $this->load->view('template/blank_header',$this->headerData);
             $this->load->view('userauth/login');
             $this->load->view('template/footer');
 	}
@@ -23,7 +23,7 @@ class Userauth extends CI_Controller {
                     redirect("/");
                 }
             }
-            $this->load->view('template/header');
+            $this->load->view('template/header',$this->headerData);
             $this->load->view('userauth/login',$data);
             $this->load->view('template/footer');
 	}
@@ -66,7 +66,7 @@ class Userauth extends CI_Controller {
        		}
        	}
        	
-       	$this->load->view('template/header');
+       	$this->load->view('template/header',$this->headerData);
         $this->load->view('userauth/signup', $data);
         $this->load->view('template/footer');
 	}

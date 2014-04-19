@@ -1,10 +1,34 @@
+body, h1, h2, h3, h4, h5, h6 {
+	font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-weight: normal;
+}
+.border{
+	border: thin solid #DDDDDD;
+}
+.spacer-mini{
+	height: 5px;
+}
+.spacer-small{
+	height: 10px;
+}
+.ws-margin-mini{
+	margin: 5px;
+}
+.ws-margin-small{
+	margin: 10px;
+}
+.ws-no-radius{
+	border-radius: 0px;
+}
 .navbar-brand {
     padding-top: 5px;
 }
 .intro-message > h1{
     color: #0088cc;
 }
-
+.ws-fullwidth{
+	width: 100%;
+}
 .ws-container{
     margin-top: 50px;
     min-height: 500px;
@@ -41,7 +65,9 @@ legend.ws-header{
 .ws-intro-divider{
     margin: 20px auto;
 }
-
+.ws-dropdown-item a{
+	padding: 3px 10px !important;	
+}
 .ws-inverse{
 	background: white;
 }
@@ -69,4 +95,28 @@ legend.ws-header{
 	overflow: auto;
 	height: 200px;
 	overflow: auto;
+}
+ws-modal.modal{
+	text-align: left;
+}
+.modal-content {
+	border-radius: 0px;
+}
+.modal-dialog{
+	text-align: left;
+}
+.modal-body{
+	padding: 5px;
+}
+.modal-header{
+	text-align: left;
+	padding: 5px 10px;
+}
+.modal-footer{
+	padding: 5px 10px;
+}
+
+/* Add element Styles */
+.modal-body.addelementcontent{
+	padding: 15px;
 }

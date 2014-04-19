@@ -91,17 +91,17 @@ class Place extends REST_Controller
             $this->response(array('status' => 0,'message'=>"Invalid place id"), 404);
         }
     }
-    function founders_get(){
-        $returnArray = array();
-        array_push($returnArray, "mohit");
-        array_push($returnArray, "BHupendra");
-        //print_r($returnArray);
-        if($returnArray)
+    function country_get($placeId=null){
+    	$this->load->model('place/Country_model','countrymodel');
+    	$filter = array();
+    	$filter['popular']=true;
+        $countryList = $this->countrymodel->getAllCountries($filter);
+        if($countryList)
         {
-            $this->response($returnArray, 200); // 200 being the HTTP response code
+            $this->response($countryList, 200); // 200 being the HTTP response code
         }else
         {
-            $this->response(array('error' => 'Couldn\'t find any users!'), 404);
+            $this->response(array('status' => 0,'message'=> array()), 500);
         }
     }
 }

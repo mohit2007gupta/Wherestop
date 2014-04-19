@@ -19,7 +19,7 @@ require APPPATH.'/libraries/REST_Controller.php';
 class Element extends REST_Controller
 {
     public function index_get(){
-        $this->load->model('Element_model','elementmodel');
+        $this->load->model('element/Element_model','elementmodel');
         $elementList = $this->elementmodel->getAllElement("filterparam");
         $elementDetailedList=array();
         foreach($elementList as $elementListTemp){
@@ -55,9 +55,9 @@ class Element extends REST_Controller
         $response = array();
         $response['status']=10;
         $response['message']="Communication error";
-        $this->load->model('Element_model','elementmodel');
+        $this->load->model('element/Element_model','elementmodel');
         $addElementResponse = $this->elementmodel->updateElement($this->post());
-        $this->load->model('Component_model','componentmodel');
+        $this->load->model('component/Component_model','componentmodel');
         $postWidgetData = $this->post();
         if($addElementResponse){
             $this->response($addElementResponse, 200); // 200 being the HTTP response code
@@ -69,7 +69,7 @@ class Element extends REST_Controller
     public function add_post(){
         $this->load->model('Element_model','elementmodel');
         $addElementResponse = $this->elementmodel->addElement($this->post());
-        $this->load->model('Component_model','componentmodel');
+        $this->load->model('component/Component_model','componentmodel');
         $postWidgetData = $this->post();
         unset($postWidgetData['baisc']);
         unset($postWidgetData['component']);
@@ -80,7 +80,7 @@ class Element extends REST_Controller
         }
     }
     public function addpartial_post(){
-        $this->load->model('Element_model','elementmodel');
+        $this->load->model('element/Element_model','elementmodel');
         $addElementResponse = $this->elementmodel->addElementPartial($this->post());
         //$this->load->model('Component_model','componentmodel');
         //$postWidgetData = $this->post();
@@ -94,7 +94,7 @@ class Element extends REST_Controller
         }
     }
     public function infofromslug_get($elementslug){
-        $this->load->model('Element_model','elementmodel');
+        $this->load->model('element/Element_model','elementmodel');
         if($this->elementmodel->isValidSlug($elementslug) && $this->elementmodel->setElementid($this->elementmodel->getElementIdFromSlug($elementslug))){
             //echo $this->elementmodel->id;
             $elemenetDetail = $this->elementmodel->getElementDetailForRest();
@@ -104,7 +104,7 @@ class Element extends REST_Controller
         }
     }
     public function info_get($elementId){
-        $this->load->model('Element_model','elementmodel');
+        $this->load->model('element/Element_model','elementmodel');
         if($this->elementmodel->setElementid($elementId)){
             $elemenetDetail = $this->elementmodel->getElementDetailForRest();
             $this->response($elemenetDetail, 200);

@@ -49,6 +49,7 @@
                     </li>
                     <li><a href="#services"><i class="fa fa-bell fa-fw"></i> </a>
                     </li>
+                    <?php if($header['isLoggedIn']){  ?>
                     <li id="fat-menu" class="dropdown">
                         <a href="#" id="drop3" role="button" class="dropdown-toggle" data-toggle="dropdown">Mohit K <b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
@@ -60,9 +61,11 @@
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url("userauth/logout"); ?>"><i class="fa fa-user fa-fw"></i> Log out</a></li>
                         </ul>
                     </li>
+                    <?php }else{ ?>
                     <li>
                         <a href="<?php echo base_url('userauth/login'); ?>" role="button">Login</a>
                     <li>
+                    <?php } ?>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

@@ -45,7 +45,7 @@ $route['user/(:any)'] = "user/user";
 $countryList = array('India','india','Italy','italy');
 foreach($countryList as $country){
     $str = $country."/(:any)/(:any)";
-    $route[$str] = "element/element/elementview/$1";
+    $route[$str] = "element/element/elementview/$1/$2";
     $str = $country."/(:any)";
     $route[$str] = "place/place/placeview/$1";
     $str = $country;

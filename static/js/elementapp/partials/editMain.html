@@ -1,0 +1,70 @@
+<div class="componentBox">
+    <div class="componentContent">
+        <div class="" style=" border-bottom: thin solid #DDDDDD; margin: 10px 0px; height: 40px">
+       		<div class="row">
+       			<div class="pull-left col-lg-8"><span  style="font-size: 28px; margin:5px 0px">{{element.title}}</span></div>
+       			<div class="pull-right col-lg-2"><button class="btn btn-warning pull-right">Update</button></div>
+       			<div class="pull-right col-lg-2">
+       				<a class="dropdown-toggle" data-toggle="dropdown"><ws-country-flag model="element.country" size="32"></ws-country-flag><span class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu" style="right: 70px;">
+						<li class="ws-dropdown-item" ng-repeat="country in countryList | limitTo: 10"><a ng-click="selectCountry(country)"><ws-country-flag model="country" size="16"></ws-country-flag> {{country.nicename}}</a></li>
+					</ul>
+       			</div>
+       		</div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <input class="ws-fullwidth" ng-model="model.address" placeholder="Address" />
+                    </div>
+                </div>
+                <div class="spacer-mini"></div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <input class="ws-fullwidth" ng-model="element.placeid" placeholder="City" />
+                    </div>
+                </div>
+                <div class="spacer-mini"></div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <input class="ws-fullwidth" ng-model="model.url.facebook" placeholder="Facebook Link" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h5>Contact</h5>
+                        <input ng-model="model.address" class="ws-fullwidth" placeholder="Contact" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <textarea class="ws-fullwidth" style="height: 100px" placeholder="Description" ng-model="model.description"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h5>Choose Categories</h5>
+                        <div class="row">
+                        	<div class="col-lg-12">
+                        		<button class="btn btn-lg ws-no-radius ws-margin-small btn-default"><i class="fa fa-cutlery fa-fw"></i></button>
+                        		<button class="btn btn-lg ws-no-radius ws-margin-small btn-default"><i class="fa fa-shopping-cart fa-fw"></i></button>
+                        		<button class="btn btn-lg ws-no-radius ws-margin-small btn-default"><i class="fa fa-glass fa-fw"></i></button>
+                            	<button class="btn btn-lg ws-no-radius ws-margin-small btn-default"><i class="fa fa-briefcase fa-fw"></i></button>
+                            	<button class="btn btn-lg ws-no-radius ws-margin-small btn-default"><i class="fa fa-flag-checkered fa-fw"></i></button>
+                        		<button class="btn btn-lg ws-no-radius ws-margin-small btn-default"><i class="fa fa-camera fa-fw"></i></button>
+                            	<button class="btn btn-lg ws-no-radius ws-margin-small btn-default"><i class="fa fa-truck fa-fw"></i></button>
+                        	</div>
+                        </div>
+                        <div class="spacer-mini"></div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+</div>
