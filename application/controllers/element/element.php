@@ -39,10 +39,10 @@ class Element extends WS_Controller {
         		$validPage=false;
         	}
         	if($validPage){
-        		$this->load->view('template/header',$data);
+        		$this->load->view('template/header',$this->headerData);
         		$this->load->view('element/elementview',$data);
         	}else{
-        		$this->load->view('template/blank_header',$data);
+        		$this->load->view('template/blank_header',$this->headerData);
         		$this->load->view('404_page');
         	}
         	$this->load->view('template/footer');
@@ -79,7 +79,7 @@ class Element extends WS_Controller {
                 $validPage=false;
             }
             if($validPage){
-                $this->load->view('template/header',$data);
+                $this->load->view('template/header',$this->headerData);
                 $this->load->view('element/componenttemplate/'.$componentTemplate,$data);
                 $this->load->view('template/footer');
             }else{
@@ -119,11 +119,11 @@ class Element extends WS_Controller {
                 $validPage=false;
             }
             if($validPage){
-                $this->load->view('template/header',$data);
+                $this->load->view('template/header',$this->headerData);
                 $this->load->view('element/componenttemplateedit/'.$componentTemplate,$data);
                 $this->load->view('template/footer');
             }else{
-                $this->load->view('template/blank_header',$data);
+                $this->load->view('template/blank_header',$this->headerData);
                 $this->load->view('404_page');
             }
             //$this->load->view('template/footer');
