@@ -56,16 +56,13 @@ class Userauth_model extends CI_Model {
     function validateSignupParameters($postParameters) {
     	$validateResult = array('status'=> true, 'message'=>'parameters validated.');
     	 
-    	$firstName = $postParameters['firstName'];
-    	$lastName = $postParameters['lastName'];
+    	$name = $postParameters['name'];
     	$email = $postParameters['email'];
     	$password = $postParameters['password'];
-    	
-    	log_message('info', "params= ".$firstName.$lastName.$email.$password." ksk");
-    	
-    	// validate first name and last name
-    	if ($this->isNullOrEmptyString($firstName) || $this->isNullOrEmptyString($lastName) 
-    			|| $this->isNullOrEmptyString($email) || $this->isNullOrEmptyString($password)) {    		
+
+    	// check for blank or null value
+    	if ($this->isNullOrEmptyString($name) || $this->isNullOrEmptyString($email) 
+    			|| $this->isNullOrEmptyString($password)) {    		
     		$validateResult['status'] = false;
     		$validateResult['message'] = 'Blank values are not allowed.';
     		
@@ -134,7 +131,7 @@ class Userauth_model extends CI_Model {
     
     function logoutSession(){
         $this->load->library('session');
-         $this->load->helper('url');
+        $this->load->helper('url');
         echo "Loggind out session....";
         print_r($this->session->all_userdata());
         $this->session->sess_destroy();

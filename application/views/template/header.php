@@ -51,7 +51,7 @@
                     </li>
                     <?php if($header['isLoggedIn']){  ?>
                     <li id="fat-menu" class="dropdown">
-                        <a href="#" id="drop3" role="button" class="dropdown-toggle" data-toggle="dropdown">Mohit K <b class="caret"></b></a>
+                        <a href="#" id="drop3" role="button" class="dropdown-toggle" data-toggle="dropdown"><?php echo $header['loggedInUserNameShort']; ?> <b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url("user/list"); ?>"><i class="fa fa-list fa-fw"></i> List</a></li>
                           <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url("user/reviews"); ?>"><i class="fa fa-pencil fa-fw"></i> Reviews</a></li>
