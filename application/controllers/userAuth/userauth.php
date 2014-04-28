@@ -30,11 +30,123 @@ class Userauth extends WS_Controller {
             $this->load->view('userauth/login',$data);
             $this->load->view('template/footer');
 	}
-        public function forgotpassword()
-	{
-            $this->load->view('template/blank_header');
-            $this->load->view('userauth/forgotpassword');
-            $this->load->view('template/footer');
+    
+    public function forgotpassword() {
+    	$this->load->model('userauth/userauth_model','userauthmodel');
+    	$this->load->model('user/user_model', 'userModel');
+    	
+    	$data = array();
+    	
+    	if ($this->input->post()) {
+    		$postDataArray = $this->input->post();
+    		$userEmail = $postDataArray['email'];
+    		
+    		if (preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $userEmail)) {
+    			$userLoginRecord = $this->userauthmodel->fetchUserLogin($userEmail);
+    			
+    			if (isset($userLoginRecord)) {
+    				log_message('info', 'userLoginRecord is set');
+    				
+    				try {
+    					$activationData = $this->getActivationLink($userEmail, 'userauth/newpassword');
+    					$newPasswordObject = array(
+    							'user_login_id'		=>	$userLoginRecord->id,
+		    					'activation_code'	=>	$activationData['activationCode'],
+    							'activation_link'	=>	$activationData['activationLink']
+    					);
+    					
+    					// TODO implement addUpdate of newPassword record instead of below
+    					$this->userModel->addNewPasswordRecord($newPasswordObject);
+    					
+    					$mailContent = "Click on the below link to change your password \n".$activationData['activationLink'];
+    					$this->send_mail('dpak005@gmail.com', $userEmail, 'Password Reset', $mailContent);
+    					
+    					$data['postResult'] = array('status'=>true, 
+    							'message'=>'A Mail has been send to your email, Kindly visit the link provided.');
+    				}catch (Exception $e){
+    					log_message('info', 'exception occurred: '.$e->getMessage()."\n");
+    					$this->userModel->removeNewPasswordRecord($userEmail);
+    					$data['postResult'] = array('status'=>false, 'message'=>$e->getMessage());
+    				}
+    			} else {
+    				$data['postResult'] = array('status'=>false, 'message'=>'Invalid Email Address');
+    			}
+    		}
+    	}
+    	
+    	$this->load->view('template/header',$this->headerData);
+    	$this->load->view('userauth/forgotpassword',$data);
+    	$this->load->view('template/footer');
+	}
+	
+	public function newpassword() {
+		$redirectData = array('status'=>false,
+				'message'=>'Please recheck the link or contact the administrator: admin@wherestop.com.'
+		);
+		
+		if (isset($_GET['email']) && preg_match('/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/', $_GET['email'])) {
+			$email = $_GET['email'];
+		}
+		
+		if (isset($_GET['key']) && (strlen($_GET['key']) == 32)) {
+			// the activation key will always have length=32 since it it MD5 hash
+			$activationCode = $_GET['key'];
+		}
+		
+		if (isset($email) && isset($activationCode)) {
+			// TODO fetch newpassword details
+			$this->load->model('user/user_model', 'userModel');
+			
+			$newPasswordRecord = $this->userModel->fetchNewPasswordRecord($email, $activationCode);
+			
+			if (isset($newPasswordRecord)) {
+				$redirectData['status'] = true;
+				$redirectData['message'] = $email;
+				redirect(base_url("userauth/changepassword"));
+			}
+		}
+		 
+		$this->session->set_flashdata('redirectData', $redirectData);
+		redirect(base_url("userauth/error"));
+	}
+	
+	public function changepassword(){
+		$this->load->model('userauth/userauth_model', 'userauthmodel');
+		
+		$redirectData = $this->session->flashdata('redirectData');
+		
+		echo print_r($redirectData);
+
+		echo var_dump($redirectData);
+		
+		$userEmail = $redirectData['message'];
+		
+		echo $userEmail;
+		
+		$data = array();
+		
+		if ($this->input->post() && isset($userEmail)) {
+			$postDataArray = $this->input->post();
+			
+			$password = $postDataArray['password'];
+			$repassword = $postDataArray['repassword'];
+			
+			if (isset($password) && isset($repassword)) {
+				
+				if (trim($password) === trim($repassword)) {
+					
+				} else {
+					$data['postResult'] = array('status'=>false, 'message'=>'Passwords do not match, Please check again.');
+				}
+				
+			} else {
+				$data['postResult'] = array('status'=>false, 'message'=>'Blank Values are not allowed.');
+			}
+			
+		} else {
+			$redirectData = array('message'=>'Invalid request, Please try again later or contact the administrator : admin@wherestop.com');
+			$this->redirectPage($redirectData, "userauth/error");
+		}
 	}
 
     public function logout(){
@@ -87,7 +199,6 @@ class Userauth extends WS_Controller {
 		$mailContent = "Click on the below link to activate your account \n"
 				.$activationData['activationLink'];
 		$this->send_mail('dpak005@gmail.com', $postDataArray['email'], 'Wherestop User Activation', $mailContent);
-		//$this->redirectPage(array('name'=>$postDataArray['name'], 'email'=>$postDataArray['email']), "userauth/success");
 	}
 
 	public function redirectPage($redirectData, $redirectURI){
@@ -123,7 +234,7 @@ class Userauth extends WS_Controller {
 		$this->email->set_newline("\r\n");
 		$this->email->from($mailFrom); 
 		$this->email->to($mailRecipient);
-		$this->email->subject('User Registration.');
+		$this->email->subject($mailSubject);
 		$this->email->message($mailContent);
 		
 		if($this->email->send()) {
@@ -131,18 +242,6 @@ class Userauth extends WS_Controller {
 		} else {
 			show_error($this->email->print_debugger());
 		}
-	}
-	
-	function success() {
-		$data = $this->session->flashdata('redirectData');
-		
-		if (!isset($data)) {
-			redirect(base_url("/"));
-		}
-		
-		$this->load->view('template/header', $this->headerData);
-		$this->load->view('userauth/success', $data);
-		$this->load->view('template/footer');
 	}
 	
 	function error(){

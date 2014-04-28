@@ -1,16 +1,25 @@
 <div class="ws-container">
-	<section>
-		<?php echo $message ?>
-	</section>	
+	<div class="intro-header" 
+		style="background-image: url('http://upload.wikimedia.org/wikipedia/commons/0/04/Ahilya_Ghat_by_the_Ganges,_Varanasi.jpg')">
 	
-	<?php
-		if(isset($status)){
-			if (!$status) {
-	?>
-				<button value="Resend" >Resend Activation Link</button>		
-    <?php
-    		}
-	    }
-    ?>
-	
-</div>
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="intro-message ws-login-form">
+						<?php 
+							if (isset($message)) {
+						?>
+								<div class="alert alert-danger alert-dismissable">
+									<strong>Warning!</strong>
+									<?php echo $message;?>
+								</div>	
+						<?php 
+							}
+						?>
+					</div>
+				</div>
+			</div><!-- /.row -->
+		</div><!-- /.container -->
+		
+	</div><!-- /.intro-header -->
+</div><!-- /.ws-container -->

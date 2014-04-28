@@ -71,7 +71,13 @@ class Userauth_model extends CI_Model {
 
     	// validate email address expression and already existing check
     	if (preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $email)) {
-    		$validateResult = $this->validateEmail($email);
+    		if (($this->fetchUserLogin($email)) == null) {
+    			$validateResult['status'] = true;
+    			$validateResult['message'] = 'Email address valid.';
+    		} else {
+    			$validateResult['status'] = false;
+    			$validateResult['message'] = 'User already exists.';
+    		}
     	} else {
     		$validateResult['status'] = false;
     		$validateResult['message'] = 'Invalid email address.';
@@ -80,25 +86,14 @@ class Userauth_model extends CI_Model {
     	return $validateResult;
     }
     
-	function validateEmail($useremail) {
-    	$result = array();
-    	
-    	$emailQueryString = "select * from user_login where emailid = \"".$useremail."\"";
-    	log_message('info', "emailQueryString: ".$emailQueryString);
-    	
-    	$emailQuery = $this->db->query($emailQueryString);
-    	$resultCount = $emailQuery->num_rows();    	
-    	log_message('info', "emailQueryNumRows=".$resultCount);
-    	
-    	if ($resultCount > 0) {
-    		$result['status'] = false;	
-    		$result['message'] = 'User already exists.';
-    	} else {
-    		$result['status'] = true;
-    		$result['message'] = 'valid email entered';
-    	} 
-    	
-    	return $result;
+	function fetchUserLogin($useremail) {
+		$query = $this->db->get_where('user_login', array('emailid'=>$useremail));
+		
+		if ($query->num_rows()>0) {
+			return $query->row();
+		}
+		
+		return null;
     }
     
     function validateUserLogin($useremail,$password){

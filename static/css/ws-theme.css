@@ -120,3 +120,21 @@ ws-modal.modal{
 .modal-body.addelementcontent{
 	padding: 15px;
 }
+
+/* added by DIPAK */
+#signUpModal{
+	height: 180px;
+	width: 183px;
+	margin-top: 230px !important;
+	margin-left: 635px !important;
+	overflow-y: hidden;
+    overflow-x: hidden;
+}
+
+#signUpModal .modal-content{
+	max-height: 0px;
+}
+
+#forgotPasswordModal .modal-title{
+	color: black;
+}

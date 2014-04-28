@@ -50,20 +50,24 @@ class User_model extends CI_Model {
 		$result = array('status'=>false, 'message'=>'communication error', 'userLoginId'=>null);
     	
     	$name = $signUpParameters['name'];
-    	$firstName = substr($name,0,strrpos($name," "));
-    	$lastName = substr($name,strrpos($name," ")+1);
+    	$firstName = trim(substr($name,0,strrpos($name," ")));
+    	$lastName = trim(substr($name,strrpos($name," ")));
     	$email = $signUpParameters['email'];
     	$password = $signUpParameters['password'];
-
-    	$insertQueryString = "insert into user_login(emailid, password, valid, first_name, last_name) values(\"".$email."\", 
-    			\"".md5($password)."\", \"".$userValid."\", \"".$firstName."\", \"".$lastName."\")";
-    	log_message('info', "insertUserLoginQueryString=".$insertQueryString);
     	
-    	if ($this->db->query($insertQueryString)) {
+    	$userLoginObject = array(
+    			'emailid'		=>	$email,
+    			'password'		=>	md5($password),
+    			'valid'			=> 	$userValid,
+    			'first_name'	=> 	$firstName,
+    			'last_name'		=> 	$lastName
+    	);
+
+    	if ($this->db->insert('user_login', $userLoginObject)) {
     		$result['status'] = true;
     		$result['message'] = "User registered successfully.";
     		$result['userLoginId'] = $this->db->insert_id();
-
+    		
     		return $result;
     	}
     	
@@ -86,12 +90,14 @@ class User_model extends CI_Model {
     function insertUserRegistration($activationCode, $userLoginId, $activationLink) {
     	// user_registration table
     	$result = array('status'=>false, 'message'=>'communication error');
+
+    	$userRegistrationObject = array(
+    			'activation_code'	=> 	$activationCode,
+    			'user_login_id'		=> 	$userLoginId,
+    			'activation_link'	=> 	$activationLink
+    	);
     	
-    	$insertQueryString = "insert into user_registration (activation_code, user_login_id, activation_link) 
-    			values(\"".$activationCode."\", \"".$userLoginId."\", \"".$activationLink."\")";
-    	log_message('info', 'insertUserRegistrationQueryString='.$insertQueryString);
-    	
-    	if ($this->db->query($insertQueryString)) {
+    	if ($this->db->insert('user_registration', $userRegistrationObject)) {
     		$result['status'] = true;
     		$result['message'] = 'Entry added into user_registration table';
     	}
@@ -147,6 +153,42 @@ class User_model extends CI_Model {
 		}
     	
     	return $result;
+    }
+    
+    // queries related to new_password table
+    function addNewPasswordRecord($newPasswordObject){
+    	if (!($this->db->insert('new_password', $newPasswordObject))) {
+    		throw new Exception('Cannot insert new password object, user_login_id='.$newPasswordObject['user_login_id']);
+    	}
+    }
+    
+    function removeNewPasswordRecord($userEmail){
+    	$sqlQuery = "DELETE 
+    			FROM new_password np, user_login ul
+    			WHERE np.user_login_id = ul.id AND ul.emailid=?";
+    	
+    	if (!$this->db->query($sqlQuery, array($userEmail))) {
+    		throw new Exception('Cannot remove new password object.'.$userEmail);
+    	}
+    }
+    
+    function fetchNewPasswordRecord($userEmail, $activationCode){
+    	$sqlQueryString = "SELECT np.* 
+    			FROM new_password np, user_login ul 
+    			WHERE np.activation_code=? AND np.user_login_id = ul.id 
+    				AND ul.emailid=?";
+    	
+    	$query = $this->db->query($sqlQueryString, array($activationCode, $userEmail));
+
+    	if ($query->num_rows() == 1) {
+    		return $query->row();
+    	}
+    	
+    	return null;
+    }
+    
+    function addUpdateNewPasswordRecord(){
+    	// TODO
     }
     
 }
