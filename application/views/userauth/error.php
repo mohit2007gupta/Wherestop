@@ -12,6 +12,11 @@
 								<div class="alert alert-danger alert-dismissable">
 									<strong>Warning!</strong>
 									<?php echo $message;?>
+									<?php 
+										if(isset($link)){
+											echo "<a title=\"".$link['title']."\" href=\"".$link['href']."\">".$link['label']."</a>";
+										}
+									?>
 								</div>	
 						<?php 
 							}

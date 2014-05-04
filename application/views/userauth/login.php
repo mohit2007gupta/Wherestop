@@ -40,7 +40,7 @@
 											<input type="checkbox" /> <b>Remember me</b>
 										</label>
 										
-										<a href="<?php echo base_url('userauth/forgotpassword');?>">
+										<a href="<?php echo base_url('userauth/password_reset');?>">
 											<span class=""></span>Forgot Password
 										</a>
 									</div>
@@ -74,4 +74,5 @@
 		</div><!-- /.container -->
 	</div><!-- /.header-container -->
 </div><!-- /.ws-container -->
+
 <script src="<?php echo base_url('static/js/demoapp/main.js') ?>" type="text/javascript" ></script>

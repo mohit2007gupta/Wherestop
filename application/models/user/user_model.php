@@ -1,9 +1,5 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 class User_model extends CI_Model {
     var $userID = "";
     var $name = "";
@@ -26,6 +22,7 @@ class User_model extends CI_Model {
     function setName($name){
         return $this->name;
     }
+    
     function getName(){
         return $name;
     }
@@ -33,11 +30,12 @@ class User_model extends CI_Model {
     function setEmail($userEmail) {
     	$this->email = $userEmail;
     }
+    
     function getEmail(){
     	return $this->email;
     }
     
-    function fetchUserInfo(){
+    public function fetchUserInfo(){
     	// user_info table
         $dataQuery = "select * from user_login where id = \"".$this->userID."\"";
         $query = $this->db->query($dataQuery);
@@ -45,7 +43,7 @@ class User_model extends CI_Model {
         return $userDetail[0];
     }
     
-    function insertUserLogin($signUpParameters, $userValid) {
+    public function insertUserLogin($signUpParameters, $userValid) {
     	//user_login table
 		$result = array('status'=>false, 'message'=>'communication error', 'userLoginId'=>null);
     	
@@ -74,7 +72,7 @@ class User_model extends CI_Model {
     	return $result;
     }
     
-    function removeUserLogin($userEmail){
+    public function removeUserLogin($userEmail){
     	// user_login table
     	$result = array('status'=>false, 'message'=>'communication error');
     	
@@ -87,7 +85,22 @@ class User_model extends CI_Model {
     	return $result;
     }
     
-    function insertUserRegistration($activationCode, $userLoginId, $activationLink) {
+    public function updateUserLoginPassword($userEmail, $newPassword){
+    	$result = array('status'=>false, 'message'=>'communication error');
+
+    	$sqlQuery = "UPDATE user_login
+    			SET password=?
+    			WHERE emailid=?";
+    	
+    	if ($this->db->query($sqlQuery, array(md5($newPassword), $userEmail))) {
+    		$result['status'] = true;
+    		$result['mmessage'] = 'Record updated from user_login table having emailid='.$userEmail;
+    	}
+    	
+    	return $result;
+    }
+    
+    public function insertUserRegistration($activationCode, $userLoginId, $activationLink) {
     	// user_registration table
     	$result = array('status'=>false, 'message'=>'communication error');
 
@@ -104,30 +117,13 @@ class User_model extends CI_Model {
     	
     	return $result;
     }
-    
-    function removeUserRegistration($userEmail) {
-    	// user_registration table
-    	$result = array('status'=>false, 'message'=>'communication error');
-    	
-    	$deleteQueryString = "DELETE FROM user_registration ur, user_login ul 
-    			WHERE ur.user_login_id = ul.id AND ul.emailid = \"".$userEmail."\"";
-    	
-    	if ($this->db->query($deleteQueryString)) {
-    		$result['status'] = true;
-    		$result['message'] = 'Record deleted from user_registration whose emailid in user_login ='.$userEmail;
-    	}
-    	
-    	return $result;
-    }
-    
-    function fetchUserRegistrationDetails($userEmail, $activationCode) {
+        
+    public function fetchUserRegistrationDetails($userEmail, $activationCode) {
     	// user_registration table
     	$queryString = "SELECT ur.*
     			FROM user_registration ur, user_login ul
     			WHERE ur.activation_code = \"".$activationCode."\" AND ur.user_login_id = ul.id 
     					AND ul.emailid = \"".$userEmail."\" AND ul.active=0";
-    	
-    	log_message('info', "fetchUserRegistrationDetail Query = ".$queryString);
     	
     	$fetchQuery = $this->db->query($queryString);
 		
@@ -138,7 +134,7 @@ class User_model extends CI_Model {
     	return null;
     }
     
-    function activateUser($userEmail, $activationCode) {
+    public function activateUser($userEmail, $activationCode) {
     	// user_login table
     	$result = array('status'=>false, 'message'=>'communication error');
     	
@@ -156,27 +152,54 @@ class User_model extends CI_Model {
     }
     
     // queries related to new_password table
-    function addNewPasswordRecord($newPasswordObject){
-    	if (!($this->db->insert('new_password', $newPasswordObject))) {
-    		throw new Exception('Cannot insert new password object, user_login_id='.$newPasswordObject['user_login_id']);
-    	}
+    public function addNewPasswordRecord($newPasswordObject){
+    	return $this->db->insert('new_password', $newPasswordObject);
     }
     
-    function removeNewPasswordRecord($userEmail){
+    public function removeNewPasswordRecord($userEmail){
     	$sqlQuery = "DELETE 
     			FROM new_password np, user_login ul
-    			WHERE np.user_login_id = ul.id AND ul.emailid=?";
+    			WHERE np.is_active IS TRUE 
+    				AND np.user_login_id = ul.id AND ul.emailid=?";
     	
     	if (!$this->db->query($sqlQuery, array($userEmail))) {
     		throw new Exception('Cannot remove new password object.'.$userEmail);
     	}
     }
     
-    function fetchNewPasswordRecord($userEmail, $activationCode){
+    public function archiveNewPasswordByActivationCode($activationCode){
+    	$sqlQuery = "UPDATE new_password
+    			SET is_active=FALSE
+    			WHERE activation_code=?";
+    	
+    	return $this->db->query($sqlQuery, array($activationCode));
+    }
+    
+    public function archiveNewPasswordByUserLoginId($userLoginId){
+    	$sqlQuery = "UPDATE new_password
+    			SET is_active=FALSE
+    			WHERE user_login_id=?";
+    	 
+    	return $this->db->query($sqlQuery, array($userLoginId));
+    }
+    
+    public function addUpdateNewPasswordRecord($userLoginId, $newPasswordObject){
+    	$newPasswordRecord = $this->getNewPasswordByUserLoginId($userLoginId);
+
+    	if ($newPasswordRecord!=null) {
+    		// archive existing record
+    		$this->archiveNewPasswordByUserLoginId($userLoginId);
+    	}
+    	
+    	// insert new record
+    	return $this->addNewPasswordRecord($newPasswordObject);
+    }
+    
+    public function fetchNewPasswordRecord($userEmail, $activationCode){
     	$sqlQueryString = "SELECT np.* 
     			FROM new_password np, user_login ul 
-    			WHERE np.activation_code=? AND np.user_login_id = ul.id 
-    				AND ul.emailid=?";
+    			WHERE np.is_active is TRUE AND np.activation_code=? 
+    				AND np.user_login_id = ul.id AND ul.emailid=?";
     	
     	$query = $this->db->query($sqlQueryString, array($activationCode, $userEmail));
 
@@ -187,8 +210,18 @@ class User_model extends CI_Model {
     	return null;
     }
     
-    function addUpdateNewPasswordRecord(){
-    	// TODO
+    public function getNewPasswordByUserLoginId($userLoginId){
+    	$sqlQueryString = "SELECT np.* 
+    			FROM new_password np 
+    			WHERE np.user_login_id=? AND np.is_active IS TRUE";
+    	
+    	$query = $this->db->query($sqlQueryString, array($userLoginId));
+    	
+    	if ($query->num_rows()>0) {
+    		return $query->first_row();
+    	}
+    	 
+    	return null;
     }
     
 }

@@ -1,4 +1,7 @@
-<div class="ws-container">
+<?php 
+	if (isset($userEmail) && isset($activationCode)) {
+?>
+	<div class="ws-container">
 	<div class="intro-header" 
 		style="background-image: url('http://upload.wikimedia.org/wikipedia/commons/0/04/Ahilya_Ghat_by_the_Ganges,_Varanasi.jpg')">
 	
@@ -23,16 +26,13 @@
 									}
 								?>
 								
-								
 								<div class="input-group ws-margin-small">
 									<span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
 									<input class="form-control" name="password" type="password" placeholder="Password" required="required">
 								</div>
 								
-								<div class="input-group ws-margin-small">
-									<span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
-									<input class="form-control" name="repassword" type="password" placeholder="Re-Type Password" required="required">
-								</div>
+								<input type="hidden" name="userEmail" value="<?php echo $userEmail?>" readonly="readonly" />
+								<input type="hidden" name="activationCode" value="<?php echo $activationCode?>" readonly="readonly" />
 								
 								<input type="submit" value="Submit" class="btn btn-info" />
 							</fieldset>
@@ -45,3 +45,8 @@
 		
 	</div><!-- /.intro-header -->
 </div><!-- /.ws-container -->
+<?php 
+	} else {
+		redirect(base_url("userauth/error"));
+	}
+?>
