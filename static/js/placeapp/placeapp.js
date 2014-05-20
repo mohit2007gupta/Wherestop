@@ -3,9 +3,9 @@ define("js/placeapp/placeapp",[
         'angular'
         ,'js/infrastructure/infrastructure',
         ,'js/placeapp/services/services'
-        ,'js/placeapp/directives/frontcomponents'
+        ,'js/placeapp/directives/placeComponents'
     ], function (angular) {
-    var demoapp = angular.module('placeapp', ['html.infrastructure.Infrastructure','placeapp.services','html.placeapp.frontcomponents']).config(["$routeProvider",function($routeProvider){
+    var demoapp = angular.module('placeapp', ['html.infrastructure.Infrastructure','placeapp.services','html.placeapp.placeComponents']).config(["$routeProvider",function($routeProvider){
         var baseUrl = jsPath+"placeapp/partials/";
         $routeProvider.when('/', {
             controller: 'HomeController',

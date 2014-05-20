@@ -200,6 +200,6 @@ if (defined('ENVIRONMENT'))
  *
  */
 require_once BASEPATH.'core/CodeIgniter.php';
-
+date_default_timezone_set('Asia/Kolkata');
 /* End of file index.php */
 /* Location: ./index.php */

@@ -8,12 +8,16 @@
 	            <h4 class="modal-title">Modal title</h4>
 	          </div>
 	          <div class="modal-body addelementcontent">
+	            {{model}}
 	            <div class="row-fluid">
 	                <input class="span12 ng-pristine ng-valid" placeholder="Element title" style="width: 100%" ng-model="model.title">
 	            </div>
 	            <div class="spacer-small"></div>
+	           	<div class="row-fluid">
+	                <input type="text" id="Autocomplete" class="span12 ng-pristine ng-valid" style="width: 100%" ng-autocomplete="model.location" details="model.detail" options="autocompleteoptions" />
+	            </div> 
+	          </div>
 	            
-	        	</div>
 	            
 	          <div class="modal-footer">
 	            <button type="button" class="btn btn-sm" data-dismiss="modal">Close</button>

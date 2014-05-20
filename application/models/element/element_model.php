@@ -45,7 +45,7 @@ class Element_model extends CI_Model {
         $query = $this->db->query($dataQuery);
         $elementList = $query->result_array();
         $returnArray = array();
-        //$this->load->model('Component_model','componentmodel');
+        //$this->load->model('component/Component_model','componentmodel');
         foreach($elementList as $elementTmp){
             /*$componentId = $elementTmp['component_id'];
             $componentInfo = $this->componentmodel->getComponentDetail($componentId);
@@ -90,7 +90,7 @@ class Element_model extends CI_Model {
         if(!$this->id){
             $this->id=$id;
         }
-        $this->load->model('Component_model','componentCoreModel');
+        $this->load->model('component/Component_model','componentCoreModel');
         $componentModelUrl = $this->componentCoreModel->getComponentModelUrl($component);
         $this->load->model($componentModelUrl,"x");
         echo "<br />";
@@ -267,21 +267,43 @@ class Element_model extends CI_Model {
         $returnArray = array();
         $returnArray['status'] = 0 ;
         $returnArray['message'] = "Communication error";
-        $basicDataArr = $postData['basic'];
-        $componentDataArr = $postData['component'];
+        //print_r($postData);
+        $basicDataArr = $postData;
+        //$componentDataArr = $postData['component'];
         //$widgetData = $componentDataArr['widget'];
         if(!isset($basicDataArr['description'])){
             $basicDataArr['description']="";
         }
-        $dataQuery = "update element set title = \"".$this->issetThenReturn($basicDataArr['title'])."\" , slug = \"".$this->_generateSlug($this->issetThenReturn($basicDataArr['title']))."\", description  = \"".$this->issetThenReturn($basicDataArr['description'])."\", component_id = \"".$this->issetThenReturn($componentDataArr['id'])."\" where id = \"".$this->id."\"  ";
+        //print_r($postData);
+        $this->id = $postData['id'];
+        
+        //checking place change
+        $updatedPlace = $postData['place'];
+        if($basicDataArr['placeId']!=$updatedPlace){
+        	$this->placeId = $updatedPlace['id'];
+        }else{
+        	$this->placeId = $basicDataArr['placeId'];
+        }
+        //checking country change = 
+        $updatedCountry = $postData['country'];
+        if($basicDataArr['countryId']!=$updatedCountry){
+        	$this->countryId=$updatedCountry['id'];
+        }else{
+        	$this->countryId=$basicDataArr['countryId'];
+        }
+        
+        $dataQuery = "update element set title = \"".$this->issetThenReturn($basicDataArr['title'])."\" , slug = \"".$this->_generateSlug($this->issetThenReturn($basicDataArr['title']))."\", description  = \"".$this->issetThenReturn($basicDataArr['description'])."\" , address= \"".$this->issetThenReturn($basicDataArr['address'])."\", placeId = \"".$this->placeId."\", countryId=\"".$this->countryId."\"   where id = \"".$this->id."\"  ";
         if(!$this->db->query($dataQuery)){
             return $returnArray;
         }else{
             $this->id = $basicDataArr['id'];
         }
-        $componentId = $componentDataArr['id'];
-        $this->load->model('Component_model','componentmodel');
         
+                
+        //$componentId = $componentDataArr['id'];
+        $this->load->model('component/Component_model','componentmodel');
+        
+        /*
         $componentWidgets = $this->componentmodel->getSelectedWidget($componentId);
         $widgetDataArr = array();
         foreach($componentWidgets as $componentWidgetsTemp){
@@ -290,7 +312,7 @@ class Element_model extends CI_Model {
                 array_push($widgetDataArr, $componentWidgetsTemp);
             }
         }
-        $widgetUpdateResponse = $this->_updateWidgetData($widgetDataArr);
+        $widgetUpdateResponse = $this->_updateWidgetData($widgetDataArr); */
         $returnArray['message']="Update successfully";
         $returnArray['status']=10;
         return $returnArray;
@@ -315,7 +337,7 @@ class Element_model extends CI_Model {
             $returnArray['message']="Added !!!";
         }
         $componentId = $componentDataArr['id'];
-        $this->load->model('Component_model','componentmodel');
+        $this->load->model('component/Component_model','componentmodel');
         $componentWidgets = $this->componentmodel->getSelectedWidget($componentId);
         $widgetDataArr = array();
         foreach($componentWidgets as $componentWidgetsTemp){
@@ -340,7 +362,8 @@ class Element_model extends CI_Model {
         return false;
     }
     public function addElementPartial($postData){
-        $returnArray = array();
+    	$this->load->model('place/Googleplace_model','googleplacemodel');
+    	$returnArray = array();
         $returnArray['status']=false;
         $returnArray['message'] = "Unable to add element";
         if(!isset($postData['title']) || trim(htmlentities($postData['title'])) == ""){
@@ -354,6 +377,7 @@ class Element_model extends CI_Model {
         $this->title = trim(htmlentities($this->issetThenReturn($postData['title'])));
         $this->description = htmlentities($this->issetThenReturn($postData['description']));
         $dataQuery = "insert into element (title, slug, description) value (\"".$this->title."\" , \"".$this->slug."\", \"".$this->description."\") ";
+        /*
         if($this->db->query($dataQuery)){
             $this->elementId = mysql_insert_id();
             $returnArray['status'] = true;
@@ -361,8 +385,9 @@ class Element_model extends CI_Model {
             $queryCount = $this->db->query($dataQueryCount);
             $elementCountInfo = $queryCount->result_array();
             $returnArray['message']="Added !!!";
-            
         }
+        */
+        $this->googleplacemodel->setGooglePlace($postData['detail']);
         return $returnArray;
     }
 }

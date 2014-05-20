@@ -63,7 +63,7 @@ class Country_model extends CI_Model {
     	return false;
     }
     function getPopularCountries(){
-    	$popularCountryList = ['99','149','105','73','199'];
+    	$popularCountryList = ['99','149','105','226','73','199'];
     	return $popularCountryList;
     }
 }

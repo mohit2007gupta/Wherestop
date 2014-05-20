@@ -18,6 +18,16 @@ define('js/elementapp/services/services',[
                 });
                 return deferred.promise;
             },
+            updateElement : function(elementModel){
+            	var deferred = $q.defer();
+                var urlToUse = baseUrl+'rest/element/update/';
+                $http.post(urlToUse,elementModel).success(function(data){
+                    deferred.resolve(data);
+                }).error(function(data){
+                    deferred.reject();
+                });
+                return deferred.promise;
+            },
             getElementInfoFromSlug : function(elementSlug){
                 var deferred = $q.defer();
                 var urlToUse = baseUrl+'rest/element/infofromslug/'+elementSlug;

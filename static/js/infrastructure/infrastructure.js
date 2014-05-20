@@ -30,6 +30,7 @@ define("js/infrastructure/infrastructure",[
         ,"html.infrastructure.PlaceServices"
         ,"ui.bootstrap"
         ,"google-maps"
+        ,"ngAutocomplete"
     ]);
     infrastructureModule.run(["URLService","$rootScope",function(URLService,$rootScope){
         $rootScope.baseUrl = baseUrl;

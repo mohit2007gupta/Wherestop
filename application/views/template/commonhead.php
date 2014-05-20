@@ -8,7 +8,7 @@ window.globalpath = "<?php echo base_url(); ?>static";
 
 <!-- Custom Google Web Font -->
 <link href="<?php echo base_url(); ?>static/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-<!--<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>-->
+<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
 
 <!-- Add custom CSS here -->
 <link href="<?php echo base_url(); ?>static/css/landing-page.css" rel="stylesheet">
@@ -20,7 +20,8 @@ window.globalpath = "<?php echo base_url(); ?>static";
 <script src="<?php echo base_url('static/lib/angular/angular.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('static/lib/underscore/underscore.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('static/lib/angularui/ui-bootstrap-tpls-0.6.0.js'); ?>" type="text/javascript"></script>
-<script src="http://maps.googleapis.com/maps/api/js?sensor=false&language=en"></script>
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false&language=en&libraries=places"></script>
 <script src="<?php echo base_url('static/lib/angularmaps/angular-google-maps.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('static/lib/ngautocomplete/ngAutocomplete.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('static/js/infrastructure/global-debug.js'); ?>" type="text/javascript"></script>
 

@@ -5,7 +5,7 @@ define("js/elementapp/elementapp",[
         ,'js/elementapp/services/services'
         ,'js/elementapp/directives/elementEditComponents'
     ], function (angular) {
-    var elementapp = angular.module('elementapp', ['html.infrastructure.Infrastructure','elementapp.services','html.elementapp.elementEditComponents']).config(["$routeProvider",function($routeProvider){
+    var elementapp = angular.module('elementapp', ['html.infrastructure.Infrastructure','elementapp.services','html.elementapp.elementEditComponents','google-maps']).config(["$routeProvider",function($routeProvider){
         var baseUrl = jsPath+"elementapp/partials/";
         $routeProvider.when('/', {
             controller: 'HomeController',
@@ -33,6 +33,23 @@ define("js/elementapp/elementapp",[
         CountryDataService.getPopularCountries().then(function(data){
         	$scope.countryList = data;
         });
+        $scope.map = {
+        	    center: {
+        	        latitude: 45,
+        	        longitude: -73
+        	    },
+        	    zoom: 8
+        };
+        $scope.updateElement = function(){
+        	ElementServices.updateElement($scope.element).then(function(data){
+        		console.log(data);
+        	});
+        };
+        $scope.saveElement = function(){
+        	ElementServices.updateElement($scope.element).then(function(data){
+        		window.location.href = window.location.pathname;
+        	});
+        };
     }]);
     return elementapp;
 });

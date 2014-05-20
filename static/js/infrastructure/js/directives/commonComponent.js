@@ -322,7 +322,8 @@ define("js/infrastructure/js/directives/commonComponent",[
             replace:true,
             require: 'ngModel',
             scope: {
-                citySelected: '=ngModel'
+                citySelected: '=ngModel',
+                onselect:'&'
             },
             controller: ["$scope","$location", function ($scope,$location) {
                 $scope.states = $scope.states || {};
@@ -341,6 +342,7 @@ define("js/infrastructure/js/directives/commonComponent",[
                 $scope.typeaheadSelected = function ($item, $model, $label) {
                     $scope.$item = $item;
                     $scope.citySelected = $item;
+                    $scope.onselect($item);
                 };
                 $scope.getCities = function(param){
                     return PlaceService.getCitiesFilter(param).then(function(data){
@@ -508,12 +510,18 @@ define("js/infrastructure/js/directives/commonComponent",[
                 $scope.modalopen = false;
                 $scope.test = "ABC";
                 $scope.model = {};
+                $scope.model.detail = {};
+                $scope.autocompleteoptions = {
+                		"types":"(regions)"
+                };
                 $scope.addElement = function(){
                 	ElementEditService.addElementPartial($scope.model).then(function(data){
                         if(data && data.status && true==data.status){
+                        	/*
                         	$('#addelementmodal').modal('hide');
                         	var pageUrl = window.location.href;
                         	window.location.href= (window.location.origin+window.location.pathname+"/"+data.element.slug+"#/edit");
+                        	*/
                         }
                     });
                 };

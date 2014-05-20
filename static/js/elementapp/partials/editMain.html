@@ -2,8 +2,11 @@
     <div class="componentContent">
         <div class="" style=" border-bottom: thin solid #DDDDDD; margin: 10px 0px; height: 40px">
        		<div class="row">
-       			<div class="pull-left col-lg-8"><span  style="font-size: 28px; margin:5px 0px">{{element.title}}</span></div>
-       			<div class="pull-right col-lg-2"><button class="btn btn-warning pull-right">Update</button></div>
+       			<div class="pull-left col-lg-6"><span  style="font-size: 28px; margin:5px 0px">{{element.title}}</span></div>
+       			<div class="pull-right col-lg-4">
+       				<button class="btn btn-warning pull-right" ng-click="updateElement()" style="margin-left: 10px">Update</button>
+       				<button class="btn btn-success pull-right" ng-click="saveElement()">Save</button>
+       			</div>
        			<div class="pull-right col-lg-2">
        				<a class="dropdown-toggle" data-toggle="dropdown"><ws-country-flag model="element.country" size="32"></ws-country-flag><span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu" style="right: 70px;">
@@ -16,13 +19,14 @@
             <div class="col-lg-6">
                 <div class="row">
                     <div class="col-lg-12">
-                        <input class="ws-fullwidth" ng-model="model.address" placeholder="Address" />
+                        <input class="ws-fullwidth" ng-model="element.address" placeholder="Address" />
                     </div>
                 </div>
                 <div class="spacer-mini"></div>
                 <div class="row">
                     <div class="col-lg-12">
-                        <input class="ws-fullwidth" ng-model="element.placeid" placeholder="City" />
+                    <ws-city-input ng-model="element.place" onselect="citySelected(element.place)"></ws-city-input>
+                    <!-- <input class="ws-fullwidth" ng-model="element.placeid" placeholder="City" /> -->
                     </div>
                 </div>
                 <div class="spacer-mini"></div>
@@ -41,7 +45,7 @@
             <div class="col-lg-6">
                 <div class="row">
                     <div class="col-lg-12">
-                        <textarea class="ws-fullwidth" style="height: 100px" placeholder="Description" ng-model="model.description"></textarea>
+                        <textarea class="ws-fullwidth" ng-model="element.description" style="height: 100px" placeholder="Description" ng-model="model.description"></textarea>
                     </div>
                 </div>
                 <div class="row">
@@ -49,13 +53,13 @@
                         <h5>Choose Categories</h5>
                         <div class="row">
                         	<div class="col-lg-12">
-                        		<button class="btn btn-lg ws-no-radius ws-margin-small btn-default"><i class="fa fa-cutlery fa-fw"></i></button>
-                        		<button class="btn btn-lg ws-no-radius ws-margin-small btn-default"><i class="fa fa-shopping-cart fa-fw"></i></button>
-                        		<button class="btn btn-lg ws-no-radius ws-margin-small btn-default"><i class="fa fa-glass fa-fw"></i></button>
-                            	<button class="btn btn-lg ws-no-radius ws-margin-small btn-default"><i class="fa fa-briefcase fa-fw"></i></button>
-                            	<button class="btn btn-lg ws-no-radius ws-margin-small btn-default"><i class="fa fa-flag-checkered fa-fw"></i></button>
-                        		<button class="btn btn-lg ws-no-radius ws-margin-small btn-default"><i class="fa fa-camera fa-fw"></i></button>
-                            	<button class="btn btn-lg ws-no-radius ws-margin-small btn-default"><i class="fa fa-truck fa-fw"></i></button>
+                        		<button class="btn btn-lg ws-no-radius ws-margin-small btn-default"><i class="fa fa-cutlery fa-2x"></i></button>
+                        		<button class="btn btn-lg ws-no-radius ws-margin-small btn-default"><i class="fa fa-shopping-cart fa-2x"></i></button>
+                        		<button class="btn btn-lg ws-no-radius ws-margin-small btn-default"><i class="fa fa-glass fa-2x"></i></button>
+                            	<button class="btn btn-lg ws-no-radius ws-margin-small btn-default"><i class="fa fa-briefcase fa-2x"></i></button>
+                            	<button class="btn btn-lg ws-no-radius ws-margin-small btn-default"><i class="fa fa-flag-checkered fa-2x"></i></button>
+                        		<button class="btn btn-lg ws-no-radius ws-margin-small btn-default"><i class="fa fa-camera fa-2x"></i></button>
+                            	<button class="btn btn-lg ws-no-radius ws-margin-small btn-default"><i class="fa fa-truck fa-2x"></i></button>
                         	</div>
                         </div>
                         <div class="spacer-mini"></div>
