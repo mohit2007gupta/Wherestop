@@ -94,6 +94,30 @@ class City_model extends CI_Model {
     	$slug=str_replace(" ","-",strtolower($name));
     	return $slug;
     }
+    function addSublocality($localityId,$sublocalityLongName,$sublocalityShortName){
+    	
+    }
+    function addLocality($cityId,$localityLongName,$localityShortName){
+    	if(!$cityId){
+    		return false;
+    	}
+    	$this->id=$cityId;
+    	// check already exist
+    	$checkLocalityQueryData = "select * from place_locality where name  = \"".$localityLongName."\" and cityId = \"".$cityId."\"";
+    	$checkLocalityQuery = $this->db->query($checkLocalityQueryData);
+    	$localityId = null;
+    	if($checkLocalityQuery->num_rows()==0){
+    		// already existed return the
+    		$localityDetailArr = $this->db->result_array();
+    		$localityDetail = $localityDetailArr[0];
+    		$localityId=$localityDetail['id']; 
+    	}else{
+    		// add new locality
+    		$dataToInsert =  array('name' => $localityLongName, 'shortname' => $localityShortName,'cityId'=>$cityId);
+    		$this->db->insert('city_state_map',$dataToInsert);
+    		$localityId=$this->db->insert_id();
+    	}
+    }
     function _save(){
     	// TODO: Save this object
     }

@@ -25,8 +25,8 @@ class Common_model extends CI_Model {
         $returnArray['isLoggedIn'] = $this->_isLoggedIn();
         if($returnArray['isLoggedIn']){
             $returnArray['loggedInUserDetail'] = $this->_getLoggedInDetails($this->_getLoggedInID());
-            $returnArray['loggedInUserNameShort'] = substr($returnArray['loggedInUserDetail']->name,0,strpos($returnArray['loggedInUserDetail']->name," "));
-            $returnArray['loggedInUserNameShort'] = "sadd";
+            $returnArray['loggedInUserNameShort'] = $returnArray['loggedInUserDetail']->first_name;
+			// $returnArray['loggedInUserNameShort'] = "sadd";
         }else{
             $returnArray['loggedInUserDetail'] = array();
             $returnArray['loggedInUserNameShort'] = "";

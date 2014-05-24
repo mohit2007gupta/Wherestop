@@ -23,6 +23,7 @@ class Googleplace_model extends CI_Model {
     	$this->load->model('place/Country_model','countrymodel');
     	$this->load->model('place/City_model','citymodel');
     	$this->load->model('place/City_model','statemodel');
+    	$subLocalityArray = array();
     	foreach ($placeDetail['address_components'] as $addressComponentTemp){
     		if(in_array("country",$addressComponentTemp['types'])){
     			$countryShortName = $addressComponentTemp['short_name'];
@@ -40,8 +41,10 @@ class Googleplace_model extends CI_Model {
     			$localityLongName = $addressComponentTemp['long_name'];
     		}
     		if(in_array("sublocality",$addressComponentTemp['types'])){
-    			$sublocalityShortName = $addressComponentTemp['short_name'];
-    			$sublocalityLongName = $addressComponentTemp['long_name'];
+    			$subLocalityArrayTemp = array();
+    			$subLocalityArrayTemp['short_name'] = $addressComponentTemp['short_name'];
+    			$subLocalityArrayTemp['long_name'] = $addressComponentTemp['long_name'];
+    			array_push($subLocalityArray,$subLocalityArrayTemp);
     		}
     	}
     	$locationType = $placeDetail['types'];
@@ -57,9 +60,9 @@ class Googleplace_model extends CI_Model {
     	if($cityShortName!=""){
     		$cityInfo = $this->citymodel->addPlace($cityLongName,$cityShortName,$this->country,"","","","CITY");
     	}
-    	echo "---------------------------------";
-    	print_r($stateInfo);
     	$this->statemodel->addCityToState($stateInfo['id'],$cityInfo['id']);
+    	// adding locality
+    	$this->city->addLocality($this->city->id,$localityLongName,$localityShortName);
     	$this->_save();
     	return $this;
     }

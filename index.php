@@ -1,5 +1,7 @@
  <?php
 
+ 	/* setting default time zone  */
+ 	date_default_timezone_set('Asia/Calcutta');
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT
