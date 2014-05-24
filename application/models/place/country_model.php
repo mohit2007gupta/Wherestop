@@ -66,5 +66,25 @@ class Country_model extends CI_Model {
     	$popularCountryList = ['99','149','105','226','73','199'];
     	return $popularCountryList;
     }
+    function arrayToObject($arr){
+    	$this->id = $arr['id'];
+    	$this->iso = $arr['iso'];
+    	$this->name=$arr['name'];
+    	$this->nicename=$arr['nicename'];
+    	$this->iso3=$arr['iso3'];
+    	$this->numcode=$arr['numcode'];
+    	$this->phonecode=$arr['phonecode'];
+    	return $this;
+    }
+    function getCountryDetailByIso($iso){
+    	$dataQuery = "select * from country where iso =\"".$iso."\"";
+    	$query = $this->db->query($dataQuery);
+    	if ($query->num_rows()>0){
+    		$countryInfo = $query->result_array();
+    		$countryInfoArr =  $countryInfo[0];
+    		return $this->arrayToObject($countryInfoArr);
+    	}
+    	return false;
+    }
 }
 ?>

@@ -51,8 +51,8 @@ define("js/elementapp/directives/elementEditComponents",[
             controller: ["$scope", function ($scope) {
                 $scope.map = {
                     center: {
-                        latitude: 28.5855,
-                        longitude: 77.2499
+                        latitude: 26.8068858,
+                        longitude: 80.901416
                     },
                     zoom: 9
                 };
