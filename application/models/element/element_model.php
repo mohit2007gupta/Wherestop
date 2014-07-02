@@ -13,6 +13,9 @@ class Element_model extends CI_Model {
     var $description = '';
     var $placeId = '';
     var $countryId = '';
+    var $latitude;
+    var $longitude;
+    var $localities;
     function __construct()
     {
         // Call the Model constructor
@@ -130,7 +133,7 @@ class Element_model extends CI_Model {
         $query = $this->db->query($dataQuery);
         if($query->num_rows()){
             $placeDetail = $query->result_array();
-            $returnArray['place'] = $placeDetail[0];
+            //$returnArray['place'] = $placeDetail[0];
         }
         
         if($returnArray['countryId']<=0){
@@ -140,7 +143,8 @@ class Element_model extends CI_Model {
         $query = $this->db->query($dataQuery);
         $countryDetail = $query->result_array();
         $returnArray['country'] = $countryDetail[0];
-        
+        $this->getElementLocalities();
+        $returnArray['localities'] = $this->localities;
         
         $registeredComponents = (array) $this->_getRegisterdComponent();
         
@@ -361,7 +365,8 @@ class Element_model extends CI_Model {
         }
         return false;
     }
-    public function addElementPartial($postData){
+    
+    public function addElementPartialRest($postData){
     	$this->load->model('place/Googleplace_model','googleplacemodel');
     	$returnArray = array();
         $returnArray['status']=false;
@@ -376,19 +381,76 @@ class Element_model extends CI_Model {
         $this->slug = $this->_generateSlug($this->issetThenReturn($postData['title']));
         $this->title = trim(htmlentities($this->issetThenReturn($postData['title'])));
         $this->description = htmlentities($this->issetThenReturn($postData['description']));
-        $dataQuery = "insert into element (title, slug, description) value (\"".$this->title."\" , \"".$this->slug."\", \"".$this->description."\") ";
-        /*
-        if($this->db->query($dataQuery)){
-            $this->elementId = mysql_insert_id();
-            $returnArray['status'] = true;
-            $dataQueryCount = "select count(*) from element";
-            $queryCount = $this->db->query($dataQueryCount);
-            $elementCountInfo = $queryCount->result_array();
-            $returnArray['message']="Added !!!";
-        }
-        */
         $this->googleplacemodel->setGooglePlace($postData['detail']);
+        $this->placeId=$this->googleplacemodel->cityId;
+        $this->countryId=$this->googleplacemodel->country->id;
+        $this->latitude = $this->googleplacemodel->latitude;
+        $this->longitude = $this->googleplacemodel->longitude;
+        // locality handle
+        
+        // sublocality handle
+        
+        $elementInsertData = array('title' => $this->title, 'slug' => $this->slug, 'description' => $this->description,'place'=>$this->googleplacemodel->formattedName, 'placeId'=> $this->placeId, 'countryId'=> $this->countryId, 'placeJson'=>json_encode($postData['detail']), 'latitude'=>$this->latitude, 'longitude'=>$this->longitude);
+        if($this->db->insert('element', $elementInsertData)){
+        	$this->id = $this->db->insert_id();
+        	//if(isset($this->googleplacemodel->locality));
+        	$this->addLocalityFromGoogleResult($this->googleplacemodel);
+        	$returnArray['status']=true;
+        	$returnArray['message']="Place added !!!";
+        	$returnArray['element']=array();
+        	$elementCity = $this->googleplacemodel->city;
+        	$elementState = $this->googleplacemodel->state;
+        	$elementCountry = $this->googleplacemodel->country;
+        	$returnArray['element']['slug']=$this->slug;
+        	$returnArray['element']['place']=$elementCity['slug'];
+        	$returnArray['element']['state']=$elementState['slug'];
+        	$returnArray['element']['country']=str_replace(" ","-",$elementCountry->nicename);
+        }
         return $returnArray;
+    }
+    private function addLocalityFromGoogleResult($googlePlaceObject){
+    	if(isset($googlePlaceObject->locality)){
+    		$this->addLocality($googlePlaceObject->locality);
+    	}
+    	if(isset($googlePlaceObject->subLocalities)){
+    		
+    		foreach ($googlePlaceObject->subLocalities as $localityTemp){
+    			$this->addLocality($localityTemp);
+    		}
+    	}	
+    }
+    private function addLocality($localityId){
+    	$elementLocalityAddDatta = array('elementId' => $this->id, 'localityId' => $localityId);
+    	if($this->db->insert('element_locality', $elementLocalityAddDatta)){
+    		return true;	
+    	}
+    	return false;
+    }
+    private function getElementLocalities(){
+    	$this->localities = array();
+    	$getElementLocalitiesQueryData = "select * from element_locality where elementId = \"".$this->id."\"";
+    	$getElementLocalitiesQuery = $this->db->query($getElementLocalitiesQueryData);
+    	$elementLocalities = $getElementLocalitiesQuery->result_array();
+    	$parentLocality = array();
+    	$fetchedLocality = array();
+    	$this->load->model('place/locality_model','placeLocality');
+    	foreach ($elementLocalities as $elementLocality){
+    		$this->placeLocality->setId($elementLocality['localityId']);
+    		$localityDetail = $this->placeLocality->fetchLocalityDetail();
+    		array_push($fetchedLocality,$this->placeLocality->id);
+    		array_push($this->localities,$localityDetail);	
+    		if($this->placeLocality->parent!=0){
+    			array_push($parentLocality,$this->placeLocality->parent);
+    		}
+    	}
+    	$getElementLocalitiesQueryData="";
+    	foreach ($parentLocality as $elementLocalityId){
+    		if(in_array($elementLocalityId,$fetchedLocality)){
+    			continue;
+    		}
+    		$this->placeLocality->setId($elementLocalityId);
+    		array_push($this->localities,$this->placeLocality->fetchLocalityDetail());
+    	}
     }
 }
 ?>

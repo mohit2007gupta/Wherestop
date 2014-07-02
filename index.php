@@ -205,3 +205,8 @@ require_once BASEPATH.'core/CodeIgniter.php';
 date_default_timezone_set('Asia/Kolkata');
 /* End of file index.php */
 /* Location: ./index.php */
+function d($arr){
+	echo "<pre>";
+	print_r($arr);
+	echo "</pre>";
+}

@@ -8,25 +8,22 @@
        				<button class="btn btn-success pull-right" ng-click="saveElement()">Save</button>
        			</div>
        			<div class="pull-right col-lg-2">
-       				<a class="dropdown-toggle" data-toggle="dropdown"><ws-country-flag model="element.country" size="32"></ws-country-flag><span class="caret"></span></a>
-					<ul class="dropdown-menu" role="menu" style="right: 70px;">
-						<li class="ws-dropdown-item" ng-repeat="country in countryList | limitTo: 10"><a ng-click="selectCountry(country)"><ws-country-flag model="country" size="16"></ws-country-flag> {{country.nicename}}</a></li>
-					</ul>
+       				<ws-country-flag model="element.country" size="32"></ws-country-flag>
        			</div>
        		</div>
         </div>
         <div class="row">
             <div class="col-lg-6">
-                <div class="row">
+	            <div class="row" style="display: none">
                     <div class="col-lg-12">
-                        <input class="ws-fullwidth" ng-model="element.address" placeholder="Address" />
+                        <input class="ws-fullwidth" ng-model="element.place" placeholder="Place" readonly />
                     </div>
                 </div>
-                <div class="spacer-mini"></div>
+                <div class="spacer-mini" style="display: none"></div>
                 <div class="row">
                     <div class="col-lg-12">
-                    <ws-city-input ng-model="element.place" onselect="citySelected(element.place)"></ws-city-input>
-                    <!-- <input class="ws-fullwidth" ng-model="element.placeid" placeholder="City" /> -->
+                        <textarea class="ws-fullwidth" ng-model="element.place" style="height: 100px" placeholder="Address"></textarea>
+                        <input class="ws-fullwidth" ng-model="element.address" placeholder="Address" />
                     </div>
                 </div>
                 <div class="spacer-mini"></div>
@@ -41,6 +38,18 @@
                         <input ng-model="model.address" class="ws-fullwidth" placeholder="Contact" />
                     </div>
                 </div>
+                <div class="spacer-mini"></div>
+                <div class="row">
+                    <div class="col-lg-8 album-container">
+                        <h5>Photos</h5>
+                        <div class="clearfix"></div>
+                        <div class="border album-thumb"><img src="/wherestop/static/photo/thumb/1.jpg" /></div>
+                        <div class="border album-thumb"><img src="/wherestop/static/photo/thumb/2.jpg" /></div>
+                        <div class="border album-thumb"><img src="/wherestop/static/photo/thumb/3.jpg" /></div>
+                        <div class="border album-thumb btn"><i class="fa fa-plus fa-2x"></i></div>
+                    </div>
+                 </div>
+				 <div class="spacer-mini"></div>
             </div>
             <div class="col-lg-6">
                 <div class="row">
@@ -68,7 +77,11 @@
                 </div>
             </div>
         </div>
-        
+        <div class="row">
+        	<div class="col-lg-12">
+        		
+        	</div>
+        </div>
     </div>
 
 </div>

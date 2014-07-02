@@ -199,3 +199,34 @@ ws-modal.modal{
 .pac-container:after{
     content:none !important;
 }
+.marker-labels {
+    color: #000000;
+    padding: 5px;
+    background-color: white;
+    font-family: "Lucida Grande", "Arial", sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+    width: auto;
+    border: 1px solid #DDDDDD;
+    white-space: nowrap;
+}
+
+/* album styles */
+
+.album-container-front{
+
+}
+.album-container-front .album-thumb-container{
+    padding-right: 0px;
+}
+.album-container .album-thumb{
+    float: left;
+    width: 50px;
+    height: 60px;
+    border: thin solid #DDDDDD;
+    margin-right: 5px;
+}
+.album-container .album-thumb i{
+    margin-top: 10px;
+}

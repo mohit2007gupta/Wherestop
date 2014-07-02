@@ -75,9 +75,28 @@ define('js/elementapp/services/services',[
                         deferred.reject();
                     });
                 return deferred.promise;
+            },
+            getNearbyMarkers : function(center){
+                var deferred = $q.defer();
+                var urlToUse = baseUrl+'rest/element/getNearbyMarkers';
+                $http({
+                    url: urlToUse,
+                    method: "GET",
+                    params: {
+                        "longitude":center.longitude,
+                        "latitude":center.latitude
+                    }
+                }).success(function(data){
+                    deferred.resolve(data);
+                }).error(function(data){
+                    deferred.reject();
+                });
+                return deferred.promise;
             }
         };
     }]);
+    FrontAppServices.factory('MapMarkers',["$location","$http", "$log","$q", function($location,$http,$log, $q) {
 
+    }]);
     return FrontAppServices;
 });

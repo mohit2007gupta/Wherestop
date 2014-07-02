@@ -81,13 +81,13 @@ class Element extends REST_Controller
     }
     public function addpartial_post(){
         $this->load->model('element/Element_model','elementmodel');
-        $addElementResponse = $this->elementmodel->addElementPartial($this->post());
+        $addElementResponse = $this->elementmodel->addElementPartialRest($this->post());
         //$this->load->model('Component_model','componentmodel');
         //$postWidgetData = $this->post();
         //unset($postWidgetData['baisc']);
         //unset($postWidgetData['component']);
         if(isset($addElementResponse['status']) && $addElementResponse['status']==true){
-            $this->response(array('status'=>1,'message'=>"Successfullu added element.","element"=>$this->elementmodel), 200); // 200 being the HTTP response code
+            $this->response($addElementResponse, 200); // 200 being the HTTP response code
         }else{
             $message = isset($addElementResponse['message']) ? $addElementResponse['message'] : "Unable to add element";
             $this->response(array('status'=>0,'message'=>$message), 200);
@@ -112,4 +112,15 @@ class Element extends REST_Controller
             $this->response(array('status'=>0,'message'=>"Invalid element"), 200);
         }
     }
+    public function getNearbyMarkers_get(){
+    	$this->load->model('place/Marker_model','markermodel');
+    	$latitude=$_GET['latitude'];
+    	$longitude=$_GET['longitude'];
+    	$markerList = $this->markermodel->getNearby($latitude,$longitude);
+    	if($markerList){
+    		$this->response($markerList, 200);
+    	}else{
+    		$this->response(array('status'=>0,'message'=>"Invalid element"), 200);
+    	}
+    } 
 }

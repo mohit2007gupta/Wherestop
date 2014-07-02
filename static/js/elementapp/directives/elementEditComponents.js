@@ -16,12 +16,18 @@ define("js/elementapp/directives/elementEditComponents",[
                 $scope.getPlaces = function(query){
                     return  ["a","b","c"];
                 };
+                $scope.elementautocomplete = {
+                		"types":"(regions)"
+                };
+                
+                $scope.optionsautocomplete = {};
+                $scope.autocomplete = "";
                 $scope.selectCountry = function(country){
                 	$scope.element.country = country;
-                	$scope.map = $scope.map || {};
+                	/*$scope.map = $scope.map || {};
                 	$scope.map.latitude = country.latitude;
                 	$scope.map.longitude = country.longitude;
-                	$scope.map.zoom = country.zoom;
+                	$scope.map.zoom = country.zoom;*/
                 };
                 $scope.citySelected = function(selectedCity){
                 	//selectedCity = $scope.element.place;
@@ -32,31 +38,45 @@ define("js/elementapp/directives/elementEditComponents",[
             link : function(scope,element,attrs,icontroller){
             	scope.$watch('element.place',function(newValue,oldValue){
             		if(newValue && newValue != oldValue){
-            			scope.map = scope.map || {};
+            			/*scope.map = scope.map || {};
                     	scope.map.latitude = newValue.latitude;
                     	scope.map.longitude = newValue.longitude;
-                    	scope.map.zoom = newValue.zoom;
+                    	scope.map.zoom = newValue.zoom;*/
             		}
             	},true);
             }
         };
     }]);
-    elementEditModule.directive('wsEditMap',["URLService", function(URLService){
+    elementEditModule.directive('wsEditMap',["URLService","ElementServices", function(URLService, ElementServices){
+        var updateNearbyMarkers = function(scope){
+            ElementServices.getNearbyMarkers(scope.geometry.center).then(function(data){
+                if(data.status==true && data.markers && data.markers instanceof Array){
+                    var tempMarker;
+                    scope.geometry.markers=[];
+                    for(var i=0;i< data.markers.length;i++){
+                        tempMarker=data.markers[i];
+
+                        tempMarker.icon = baseUrl+'static/images/icons/marker.png';
+                        tempMarker.showWindow=true;
+                        scope.geometry.markers.push(tempMarker);
+                    }
+                }
+            });
+        };
         return {
-            restrict : 'E',
+            restrict : 'A',
             replace:true,
             scope: {
-                'model': '='
+                //'model': '='
+                'geometry': '='
             },
             controller: ["$scope", function ($scope) {
-                $scope.map = {
-                    center: {
-                        latitude: 26.8068858,
-                        longitude: 80.901416
-                    },
-                    zoom: 9
-                };
-                $scope.marker = {
+                $scope.geometry = $scope.geometry || {};
+                $scope.geometry.center = $scope.geometry.center || {};
+                $scope.geometry.zoom = $scope.geometry.zoom || 12;
+                $scope.geometry.center.latitude = 28.5855;
+                $scope.geometry.center.longitude = 77.36147;
+                /*$scope.marker = {
                     latitude: 28.5855,
                     longitude: 77.36147,
                     click: function(){ alert('hello');}
@@ -77,48 +97,51 @@ define("js/elementapp/directives/elementEditComponents",[
                         icon: '/ws/static/images.green.png'
                     };
 
-                };
-                $scope.map.markers = [
+                };*/
+                /*$scope.geometry.markers = [
                     {
                         latitude: 28.5855,
                         longitude: 77.36157,
                         showWindow: true,
                         title: 'My Home 1',
-                        showWindow : true
+                        showWindow : true,
+                        icon: baseUrl+'static/images/icons/marker.png'
                     },
                     {
                         latitude: 28.6845,
                         longitude: 77.26147,
                         showWindow: false,
-                        title: 'My Home 2'
-                    }/*,
+                        title: 'My Home 2',
+                        icon: baseUrl+'static/images/icons/marker.png'
+                    },
                     {
                         latitude: 28.5855,
                         longitude: 77.36137,
                         showWindow: false,
-                        title: 'My Home 3'
-                    }*/,
+                        title: 'My Home 3',
+                        icon: baseUrl+'static/images/icons/marker.png'
+                    },
                     {
                         latitude: 28.6327,
                         longitude: 77.21948,
                         showWindow: true,
                         title: 'My Bar',
                         draggable: true,
-                        icon: './static/images/green.png'
+                        icon: baseUrl+'static/images/icons/marker.png'
                     }
-                ]
+                ]*/
             }],
             templateUrl: URLService.getJsPath()+"elementapp/partials/tempEditMap.html",
             link : function(scope,element,attrs,icontroller){
-            	scope.$watch('model',function(newValue,oldValue){
-            		if(scope.model && scope.model.longitude && scope.model.latitude && scope.model.zoom){
-            			var newCenter = {};
-            			newCenter.latitude = scope.model.latitude;
-            			newCenter.longitude = scope.model.longitude;
-            			scope.map.center = newCenter;
-            			scope.map.zoom = scope.model.zoom;
-            		}
-            	},true);
+                scope.$watch('geometry',function(newValue,oldValue){
+                    if(newValue && newValue != oldValue){
+                        console.log("changed");
+                        //scope.geometry = newValue;
+                        //scope.refresh = true;
+                    }
+                    updateNearbyMarkers(scope);
+                },true);
+
             }
         };
     }]);

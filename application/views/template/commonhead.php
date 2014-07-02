@@ -17,10 +17,11 @@ window.globalpath = "<?php echo base_url(); ?>static";
 <!-- <link href="<?php echo base_url('static/lib/bootstrap/css/bootstrap-responsive.css'); ?>" type="text/css" rel="stylesheet" media="screen, projection"> -->
 <script src="<?php echo base_url('static/lib/jquery/js/jquery-1.8.2.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('static/lib/require/require-2.1.0.js'); ?>" type="text/javascript"></script>
-<script src="<?php echo base_url('static/lib/angular/angular.js'); ?>" type="text/javascript"></script>
+<!-- <script src="<?php echo base_url('static/lib/angular/angular.js'); ?>" type="text/javascript"></script> -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.js"></script>
 <script src="<?php echo base_url('static/lib/underscore/underscore.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('static/lib/angularui/ui-bootstrap-tpls-0.6.0.js'); ?>" type="text/javascript"></script>
-<script src="http://maps.googleapis.com/maps/api/js?sensor=false&language=en&libraries=places"></script>
+<script src="http://maps.googleapis.com/maps/api/js?v=2&sensor=true&language=en&libraries=places"></script>
 <script src="<?php echo base_url('static/lib/angularmaps/angular-google-maps.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('static/lib/ngautocomplete/ngAutocomplete.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('static/js/infrastructure/global-debug.js'); ?>" type="text/javascript"></script>

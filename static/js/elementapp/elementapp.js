@@ -29,17 +29,33 @@ define("js/elementapp/elementapp",[
         $scope.x="From angular application in element app";
         ElementServices.getElementInfo(elementId).then(function(data){
         	$scope.element = data;
+            $scope.map = $scope.map || {};
+            $scope.map.zoom = 12;
+            if(data.latitude){
+            	$scope.map.center.latitude = $scope.element.latitude;
+            }
+            if(data.longitude){
+            	$scope.map.center.longitude = $scope.element.longitude;
+            }
+            // creating marker
+            var placeMarker = {
+                "latitude" : $scope.element.latitude,
+                "longitude": $scope.element.longitude,
+                "showWindow" : true,
+                "title": $scope.element.title,
+                "icon": baseUrl+"static/images/icons/blue_marker.png"
+            }
+            if($scope.map.markers instanceof  Array){
+                $scope.map.markers.push(placeMarker);
+            }
+        	/*$scope.map.center = $scope.map.center || {};
+        	$scope.map.center.latitude = $scope.element.latitude;
+        	$scope.map.center.longitude = $scope.element.longitude;
+            $scope.map.zoom = 12;*/
         });
         CountryDataService.getPopularCountries().then(function(data){
         	$scope.countryList = data;
         });
-        $scope.map = {
-        	    center: {
-        	        latitude: 45,
-        	        longitude: -73
-        	    },
-        	    zoom: 8
-        };
         $scope.updateElement = function(){
         	ElementServices.updateElement($scope.element).then(function(data){
         		console.log(data);

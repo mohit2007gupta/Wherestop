@@ -88,7 +88,7 @@ define("js/demoapp/directives/fronteditcomponents",[
             }
         };
     }]);
-    frontEditModule.directive('wsEditMap',["URLService", function(URLService){
+    frontEditModule.directive('wsEditMap2',["URLService", function(URLService){
         return {
             restrict : 'E',
             replace:true,
@@ -97,10 +97,7 @@ define("js/demoapp/directives/fronteditcomponents",[
             },
             controller: ["$scope", function ($scope) {
                 $scope.map = {
-                    center: {
-                        latitude: 28.5855,
-                        longitude: 77.2499
-                    },
+                    center: {},
                     zoom: 9
                 };
                 $scope.marker = {

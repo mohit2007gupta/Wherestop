@@ -5,7 +5,8 @@ define("js/infrastructure/js/directives/commonComponent",[
     ,'js/infrastructure/js/services/ElementServices'
 ], function (angular, $) {
     var componentModule = angular.module("html.infrastructure.components.CommonComponent", [
-        ,"html.infrastructure.CommonServices"
+        "html.infrastructure.CommonServices"
+        ,"ngAutocomplete"
     ]);
     componentModule.filter('getlast', function() {
         return function(arr, count) {
@@ -512,16 +513,18 @@ define("js/infrastructure/js/directives/commonComponent",[
                 $scope.model = {};
                 $scope.model.detail = {};
                 $scope.autocompleteoptions = {
-                		"types":"(regions)"
                 };
                 $scope.addElement = function(){
                 	ElementEditService.addElementPartial($scope.model).then(function(data){
                         if(data && data.status && true==data.status){
-                        	/*
                         	$('#addelementmodal').modal('hide');
                         	var pageUrl = window.location.href;
-                        	window.location.href= (window.location.origin+window.location.pathname+"/"+data.element.slug+"#/edit");
-                        	*/
+                        	if(data.element && data.element.country && data.element.place){
+                        		pageUrl = (window.location.origin+window.location.pathname+data.element.country+"/"+data.element.place+"/"+data.element.slug+"#/edit");
+                        	}else if(data.element && data.element.country && data.element.state){
+                        		pageUrl = (window.location.origin+window.location.pathname+data.element.country+"/"+data.element.state+"/"+data.element.slug+"#/edit");
+                        	}
+                        	window.location.href = pageUrl;
                         }
                     });
                 };
